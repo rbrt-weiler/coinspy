@@ -59,9 +59,9 @@ help: ## Show this help
 
 fmt-go: ## Run gofmt on the project
 ifneq (,$(suse_docker))
-	docker run --rm -v $(shell pwd):/app -w /app golang:$(sgoversion) $(GOFMT) ./...
+	docker run --rm -v $(shell pwd):/app -w /app golang:$(sgoversion) $(GOFMT) .
 else
-	$(GOFMT) ./...
+	$(GOFMT) .
 endif
 
 fmt: fmt-go ## Run all available formatters
@@ -81,25 +81,25 @@ pretty: fmt lint ## Run targets fmt and lint
 
 test: ## Run the tests of the project
 ifneq (,$(suse_docker))
-	docker run --rm -v $(shell pwd):/app -w /app golang:$(sgoversion) $(GOTEST) -race -cover ./...
+	docker run --rm -v $(shell pwd):/app -w /app golang:$(sgoversion) $(GOTEST) -race -cover .
 else
-	$(GOTEST) -race -cover ./...
+	$(GOTEST) -race -cover .
 endif
 
 build: ## Build an executable
 	mkdir -p $(sout_dir)/bin
 ifneq (,$(suse_docker))
-	docker run --rm -v $(shell pwd):/app -w /app -e CGO_ENABLED=$(scgo) -e GO111MODULE=$(sgomodule) golang:$(sgoversion) $(GOBUILD) -o $(sout_dir)/bin/$(final_filename) ./...
+	docker run --rm -v $(shell pwd):/app -w /app -e CGO_ENABLED=$(scgo) -e GO111MODULE=$(sgomodule) golang:$(sgoversion) $(GOBUILD) -o $(sout_dir)/bin/$(final_filename) .
 else
-	CGO_ENABLED=$(scgo) GO111MODULE=$(sgomodule) $(GOBUILD) -o $(sout_dir)/bin/$(final_filename) ./...
+	CGO_ENABLED=$(scgo) GO111MODULE=$(sgomodule) $(GOBUILD) -o $(sout_dir)/bin/$(final_filename) .
 endif
 
 $(PLATFORMS): ## Build a platform specific release
 	mkdir -p $(sout_dir)/$(release_dir)
 ifneq (,$(suse_docker))
-	docker run --rm -v $(shell pwd):/app -w /app -e CGO_ENABLED=$(scgo) -e GO111MODULE=$(sgomodule) -e GOOS=$(os) -e GOARCH=$(arch) golang:$(sgoversion) $(GOBUILD) -o $(sout_dir)/$(release_dir)/$(final_filename_version)
+	docker run --rm -v $(shell pwd):/app -w /app -e CGO_ENABLED=$(scgo) -e GO111MODULE=$(sgomodule) -e GOOS=$(os) -e GOARCH=$(arch) golang:$(sgoversion) $(GOBUILD) -o $(sout_dir)/$(release_dir)/$(final_filename_version) .
 else
-	CGO_ENABLED=$(scgo) GO111MODULE=$(sgomodule) GOOS=$(os) GOARCH=$(arch) $(GOBUILD) -o $(sout_dir)/$(release_dir)/$(final_filename_version)
+	CGO_ENABLED=$(scgo) GO111MODULE=$(sgomodule) GOOS=$(os) GOARCH=$(arch) $(GOBUILD) -o $(sout_dir)/$(release_dir)/$(final_filename_version) .
 endif
 
 release: $(PLATFORMS) ## Build a complete release
