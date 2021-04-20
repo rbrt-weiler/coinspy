@@ -17,6 +17,20 @@ Available options:
   -M, --markets string   Markets to use with multi-market providers (comma-seperated) (default "Kraken")
 ```
 
+### Example
+
+```shell
+$ coinspy -M Kraken,Binance -C BTC,ETH -F EUR,USD
+Error: Market not found (Binance ETH/USD; 9.900000 allowance remaining)
+Error: Market not found (Binance BTC/USD; 9.890000 allowance remaining)
+1 BTC = 45231.910000 EUR (on Binance as of 2021-04-20T08:40:54+02:00)
+1 BTC = 45196.700000 EUR (on Kraken as of 2021-04-20T08:40:54+02:00)
+1 BTC = 54330.100000 USD (on Kraken as of 2021-04-20T08:40:54+02:00)
+1 ETH = 1737.210000 EUR (on Binance as of 2021-04-20T08:40:54+02:00)
+1 ETH = 1734.000000 EUR (on Kraken as of 2021-04-20T08:40:54+02:00)
+1 ETH = 2087.210000 USD (on Kraken as of 2021-04-20T08:40:54+02:00)
+```
+
 ## Running / Compiling
 
 Use `go run .` to run the tool directly or `go build -o coinspy .` to compile a binary. Dependencies are managed via Go modules and thus automatically handled at compile time.
