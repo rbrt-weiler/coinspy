@@ -93,7 +93,7 @@ func main() {
 
 	for _, rate := range rates.Rates {
 		if rate.Error == nil {
-			fmt.Printf("1 %s = %f %s (on %s as of %s)\n", rate.Coin, rate.Rate, rate.Fiat, rate.Market, rate.AsOf.Format(time.RFC3339))
+			fmt.Printf("1 %s = %f %s (on %s/%s as of %s)\n", rate.Coin, rate.Rate, rate.Fiat, rate.Provider, rate.Market, rate.AsOf.Format(time.RFC3339))
 		}
 	}
 

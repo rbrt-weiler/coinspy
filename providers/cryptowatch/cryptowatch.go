@@ -38,7 +38,7 @@ func (p Cryptowatch) FetchRate(market string, coin string, fiat string) (rate ty
 	} else {
 		json.Unmarshal(resp.Body(), &apiResult)
 		if apiResult.Error != "" {
-			err = fmt.Errorf("%s (%s %s/%s; %f allowance remaining)", apiResult.Error, market, coin, fiat, apiResult.Allowance.Remaining)
+			err = fmt.Errorf("%s (%s/%s on %s/%s; %f allowance remaining)", apiResult.Error, coin, fiat, ProviderName, market, apiResult.Allowance.Remaining)
 		} else {
 			rateValue = apiResult.Result.Price
 		}
