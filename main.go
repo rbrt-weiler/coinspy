@@ -3,64 +3,18 @@ package main
 import (
 	"fmt"
 	"os"
-	"path"
 	"sort"
 	"strings"
 	"sync"
 	"time"
 
-	pflag "github.com/spf13/pflag"
-
-	providers "gitlab.com/rbrt-weiler/coinspy/providers"
-	types "gitlab.com/rbrt-weiler/coinspy/types"
-	consolehelper "gitlab.com/rbrt-weiler/go-module-consolehelper"
+	"gitlab.com/rbrt-weiler/coinspy/core"
+	"gitlab.com/rbrt-weiler/coinspy/providers"
+	"gitlab.com/rbrt-weiler/coinspy/types"
 )
-
-const (
-	toolName    string = "coinspy"
-	toolVersion string = "0.1.0"
-	toolID      string = toolName + "/" + toolVersion
-	toolURL     string = "https://gitlab.com/rbrt-weiler/coinspy"
-
-	errSuccess int = 0
-	errGeneric int = 1
-	errUsage   int = 2
-)
-
-var (
-	config types.AppConfig
-	cons   consolehelper.ConsoleHelper
-)
-
-func checkArguments() {
-	if config.Coins == "" {
-		cons.Fprintf(os.Stderr, "Error: No coins provided.\n")
-		os.Exit(errGeneric)
-	}
-	if config.Fiats == "" {
-		cons.Fprintf(os.Stderr, "Error: No fiats provided.\n")
-		os.Exit(errGeneric)
-	}
-}
 
 func init() {
-	//pflag.StringVarP(&config.Provider, "provider", "P", "Cryptowatch", "Exchange rate provider to use")
-	pflag.StringVarP(&config.Markets, "markets", "M", "Kraken", "Markets to use with multi-market providers (comma-seperated)")
-	pflag.StringVarP(&config.Coins, "coins", "C", "", "Coins to fetch rates for")
-	pflag.StringVarP(&config.Fiats, "fiats", "F", "", "Fiats to fetch rates for")
-	pflag.Usage = func() {
-		cons.Fprintf(os.Stderr, "%s\n", toolID)
-		cons.Fprintf(os.Stderr, "%s\n", toolURL)
-		cons.Fprintf(os.Stderr, "\n")
-		cons.Fprintf(os.Stderr, "A tool to fetch exchange rates for crypto coins.\n")
-		cons.Fprintf(os.Stderr, "\n")
-		cons.Fprintf(os.Stderr, "Usage: %s [options]\n", path.Base(os.Args[0]))
-		cons.Fprintf(os.Stderr, "\n")
-		cons.Fprintf(os.Stderr, "Available options:\n")
-		pflag.PrintDefaults()
-		os.Exit(errUsage)
-	}
-	pflag.Parse()
+	core.SetupFlags()
 }
 
 func main() {
@@ -68,7 +22,10 @@ func main() {
 	var rates types.ExchangeRates
 	var wg sync.WaitGroup
 
-	checkArguments()
+	config := &core.Config
+	cons := &core.Cons
+
+	core.CheckArguments()
 
 	provider = providers.Cryptowatch()
 	markets := strings.Split(config.Markets, ",")
@@ -93,7 +50,7 @@ func main() {
 
 	for _, rate := range rates.Rates {
 		if rate.Error == nil {
-			fmt.Printf("1 %s = %f %s (on %s/%s as of %s)\n", rate.Coin, rate.Rate, rate.Fiat, rate.Provider, rate.Market, rate.AsOf.Format(time.RFC3339))
+			cons.Printf("1 %s = %f %s (on %s/%s as of %s)\n", rate.Coin, rate.Rate, rate.Fiat, rate.Provider, rate.Market, rate.AsOf.Format(time.RFC3339))
 		}
 	}
 
