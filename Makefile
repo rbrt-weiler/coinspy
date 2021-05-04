@@ -8,8 +8,8 @@ GOTEST := $(GOCMD) test
 GOBUILD := $(GOCMD) build
 CGO ?= 1 ## Enable / disable CGO support
 GOMODULE ?= on ## Enable / disable Go module support
-BINARY_NAME ?= coinspy ## Set the name of the resulting binary
-VERSION ?= $(shell awk 'BEGIN {FS = "\\042"} /toolVersion.+=/ {printf "%s", $$2}' *.go) ## Set the version for release
+BINARY_NAME ?= parser ## Set the name of the resulting binary
+VERSION ?= $(shell awk 'BEGIN {FS = "\\042"} /(t|T)oolVersion.+=/ {printf "%s", $$2; exit}' core/*.go *.go) ## Set the version for release
 COMMIT_ID := $(word 1, $(shell git log --oneline -n1))
 EXPORT_RESULT ?= true ## Export the result of the linter
 OUT_DIR ?= out ## The base out dir for all results
@@ -59,9 +59,9 @@ help: ## Show this help
 
 fmt-go: ## Run gofmt on the project
 ifneq (,$(suse_docker))
-	docker run --rm -v $(shell pwd):/app -w /app golang:$(sgoversion) $(GOFMT) .
+	docker run --rm -v $(shell pwd):/app -w /app golang:$(sgoversion) $(GOFMT) ./...
 else
-	$(GOFMT) .
+	$(GOFMT) ./...
 endif
 
 fmt: fmt-go ## Run all available formatters
@@ -81,9 +81,9 @@ pretty: fmt lint ## Run targets fmt and lint
 
 test: ## Run the tests of the project
 ifneq (,$(suse_docker))
-	docker run --rm -v $(shell pwd):/app -w /app golang:$(sgoversion) $(GOTEST) -race -cover .
+	docker run --rm -v $(shell pwd):/app -w /app golang:$(sgoversion) $(GOTEST) -race -cover ./...
 else
-	$(GOTEST) -race -cover .
+	$(GOTEST) -race -cover ./...
 endif
 
 build: ## Build an executable
