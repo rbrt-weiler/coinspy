@@ -36,7 +36,11 @@ func (p Cryptowatch) FetchRate(market string, coin string, fiat string) (rate ty
 	if err != nil {
 		err = fmt.Errorf("could not fetch exchange rate: %s", err)
 	} else {
-		json.Unmarshal(resp.Body(), &apiResult)
+		err = json.Unmarshal(resp.Body(), &apiResult)
+		if err != nil {
+			err = fmt.Errorf("could not unmarshal JSON: %s", err)
+			return
+		}
 		if apiResult.Error != "" {
 			err = fmt.Errorf("%s (%s/%s on %s/%s; %f allowance remaining)", apiResult.Error, coin, fiat, ProviderName, market, apiResult.Allowance.Remaining)
 		} else {
