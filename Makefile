@@ -8,7 +8,7 @@ GOTEST := $(GOCMD) test
 GOBUILD := $(GOCMD) build
 CGO ?= 1 ## Enable / disable CGO support
 GOMODULE ?= on ## Enable / disable Go module support
-BINARY_NAME ?= parser ## Set the name of the resulting binary
+BINARY_NAME ?= coinspy ## Set the name of the resulting binary
 VERSION ?= $(shell awk 'BEGIN {FS = "\\042"} /(t|T)oolVersion.+=/ {printf "%s", $$2; exit}' core/*.go *.go) ## Set the version for release
 COMMIT_ID := $(word 1, $(shell git log --oneline -n1))
 EXPORT_RESULT ?= true ## Export the result of the linter
