@@ -67,5 +67,5 @@ func main() {
 		}
 	}
 
-	os.Exit(0)
+	os.Exit(core.ErrSuccess)
 }
