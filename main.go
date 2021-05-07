@@ -21,6 +21,7 @@ func main() {
 	var provider providers.Provider
 	var rates types.ExchangeRates
 	var wg sync.WaitGroup
+	var resultSet []string
 
 	config := &core.Config
 	cons := &core.Cons
@@ -50,7 +51,19 @@ func main() {
 
 	for _, rate := range rates.Rates {
 		if rate.Error == nil {
-			cons.Printf("1 %s = %f %s (on %s/%s as of %s)\n", rate.Coin, rate.Rate, rate.Fiat, rate.Provider, rate.Market, rate.AsOf.Format(time.RFC3339))
+			resultSet = append(resultSet, rate.String())
+		}
+	}
+
+	for _, line := range resultSet {
+		cons.Println(line)
+	}
+
+	if config.Pushover.Enabled {
+		poErr := core.SendPushoverMessage(config.Pushover.Token, config.Pushover.User, strings.Join(resultSet, "\r\n"), time.Now())
+		if poErr != nil {
+			cons.Fprint(os.Stderr, "Error: %s\n", poErr)
+			os.Exit(core.ErrGeneric)
 		}
 	}
 
