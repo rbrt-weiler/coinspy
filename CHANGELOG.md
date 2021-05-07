@@ -24,5 +24,6 @@ Initial public release.
 1. Fetch exchange rates for an arbitary number of coins and fiats from Cryptowatch.
 1. Support for multiple markets as supported by Cryptowatch.
 
-[Unreleased]: https://gitlab.com/rbrt-weiler/coinspy/-/compare/0.1.0...master
+[Unreleased]: https://gitlab.com/rbrt-weiler/coinspy/-/compare/0.2.0...master
+[0.2.0]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/0.2.0
 [0.1.0]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/0.1.0
