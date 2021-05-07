@@ -62,7 +62,7 @@ func main() {
 	if config.Pushover.Enabled {
 		poErr := core.SendPushoverMessage(config.Pushover.Token, config.Pushover.User, strings.Join(resultSet, "\r\n"), time.Now())
 		if poErr != nil {
-			cons.Fprint(os.Stderr, "Error: %s\n", poErr)
+			cons.Fprintf(os.Stderr, "Error: %s\n", poErr)
 			os.Exit(core.ErrGeneric)
 		}
 	}
