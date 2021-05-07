@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
-(Nothing at this point.)
+### Added
+
+1. Configuration via environment file.
 
 ## [0.2.0] - 2021-05-08
 

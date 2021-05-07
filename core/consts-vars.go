@@ -12,6 +12,8 @@ const (
 	ToolID      string = ToolName + "/" + ToolVersion
 	ToolURL     string = "https://gitlab.com/rbrt-weiler/coinspy"
 
+	EnvFileName string = ".coinspyenv"
+
 	ErrSuccess int = 0
 	ErrGeneric int = 1
 	ErrUsage   int = 2

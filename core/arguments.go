@@ -1,20 +1,44 @@
 package core
 
 import (
+	"fmt"
 	"os"
 	"path"
 
+	godotenv "github.com/joho/godotenv"
 	pflag "github.com/spf13/pflag"
+	envordef "gitlab.com/rbrt-weiler/go-module-envordef"
 )
 
+func LoadEnv() {
+	// if envFileName exists in the current directory, load it
+	localEnvFile := fmt.Sprintf("./%s", EnvFileName)
+	if _, localEnvErr := os.Stat(localEnvFile); localEnvErr == nil {
+		if loadErr := godotenv.Load(localEnvFile); loadErr != nil {
+			Cons.Fprintf(os.Stderr, "Could not load env file <%s>: %s", localEnvFile, loadErr)
+		}
+	}
+
+	// if envFileName exists in the user's home directory, load it
+	if homeDir, homeErr := os.UserHomeDir(); homeErr == nil {
+		homeEnvFile := fmt.Sprintf("%s/%s", homeDir, EnvFileName)
+		if _, homeEnvErr := os.Stat(homeEnvFile); homeEnvErr == nil {
+			if loadErr := godotenv.Load(homeEnvFile); loadErr != nil {
+				Cons.Fprintf(os.Stderr, "Could not load env file <%s>: %s", homeEnvFile, loadErr)
+			}
+		}
+	}
+}
+
 func SetupFlags() {
+	LoadEnv()
 	//pflag.StringVarP(&config.Provider, "provider", "P", "Cryptowatch", "Exchange rate provider to use")
-	pflag.StringVarP(&Config.Markets, "markets", "M", "Kraken", "Markets to use with multi-market providers (comma-seperated)")
-	pflag.StringVarP(&Config.Coins, "coins", "C", "", "Coins to fetch rates for")
-	pflag.StringVarP(&Config.Fiats, "fiats", "F", "", "Fiats to fetch rates for")
-	pflag.StringVar(&Config.Pushover.Token, "pushover-token", "", "Token for Pushover API access")
-	pflag.StringVar(&Config.Pushover.User, "pushover-user", "", "User for Pushover API access")
-	pflag.BoolVarP(&Config.Quiet, "quiet", "q", false, "Do not print to stdout")
+	pflag.StringVarP(&Config.Markets, "markets", "M", envordef.StringVal("COINSPY_MARKETS", "Kraken"), "Markets to use with multi-market providers (comma-seperated)")
+	pflag.StringVarP(&Config.Coins, "coins", "C", envordef.StringVal("COINSPY_COINS", ""), "Coins to fetch rates for")
+	pflag.StringVarP(&Config.Fiats, "fiats", "F", envordef.StringVal("COINSPY_FIATS", ""), "Fiats to fetch rates for")
+	pflag.StringVar(&Config.Pushover.Token, "pushover-token", envordef.StringVal("COINSPY_PUSHOVER_TOKEN", ""), "Token for Pushover API access")
+	pflag.StringVar(&Config.Pushover.User, "pushover-user", envordef.StringVal("COINSPY_PUSHOVER_USER", ""), "User for Pushover API access")
+	pflag.BoolVarP(&Config.Quiet, "quiet", "q", envordef.BoolVal("COINSPY_QUIET", false), "Do not print to stdout")
 	pflag.Usage = func() {
 		Cons.Fprintf(os.Stderr, "%s\n", ToolID)
 		Cons.Fprintf(os.Stderr, "%s\n", ToolURL)
