@@ -10,4 +10,5 @@ type AppConfig struct {
 		User    string
 		Enabled bool
 	}
+	Quiet bool
 }

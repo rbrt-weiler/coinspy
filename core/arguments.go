@@ -14,6 +14,7 @@ func SetupFlags() {
 	pflag.StringVarP(&Config.Fiats, "fiats", "F", "", "Fiats to fetch rates for")
 	pflag.StringVar(&Config.Pushover.Token, "pushover-token", "", "Token for Pushover API access")
 	pflag.StringVar(&Config.Pushover.User, "pushover-user", "", "User for Pushover API access")
+	pflag.BoolVarP(&Config.Quiet, "quiet", "q", false, "Do not print to stdout")
 	pflag.Usage = func() {
 		Cons.Fprintf(os.Stderr, "%s\n", ToolID)
 		Cons.Fprintf(os.Stderr, "%s\n", ToolURL)

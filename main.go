@@ -55,8 +55,10 @@ func main() {
 		}
 	}
 
-	for _, line := range resultSet {
-		cons.Println(line)
+	if !config.Quiet {
+		for _, line := range resultSet {
+			cons.Println(line)
+		}
 	}
 
 	if config.Pushover.Enabled {
