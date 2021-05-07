@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
 	"os"
-	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -43,12 +41,7 @@ func main() {
 	}
 	wg.Wait()
 
-	sort.Slice(rates.Rates, func(i, j int) bool {
-		left := fmt.Sprintf("%s-%s-%s", rates.Rates[i].Coin, rates.Rates[i].Fiat, rates.Rates[i].Market)
-		right := fmt.Sprintf("%s-%s-%s", rates.Rates[j].Coin, rates.Rates[j].Fiat, rates.Rates[j].Market)
-		return left < right
-	})
-
+	rates.Sort()
 	for _, rate := range rates.Rates {
 		if rate.Error == nil {
 			resultSet = append(resultSet, rate.String())
