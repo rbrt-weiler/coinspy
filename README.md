@@ -12,9 +12,12 @@ CoinSpy aids crypto currency investors by fetching market prices and pushing the
 Usage: coinspy [options]
 
 Available options:
-  -C, --coins string     Coins to fetch rates for
-  -F, --fiats string     Fiats to fetch rates for
-  -M, --markets string   Markets to use with multi-market providers (comma-seperated) (default "Kraken")
+  -C, --coins string            Coins to fetch rates for
+  -F, --fiats string            Fiats to fetch rates for
+  -M, --markets string          Markets to use with multi-market providers (comma-seperated) (default "Kraken")
+      --pushover-token string   Token for Pushover API access
+      --pushover-user string    User for Pushover API access
+  -q, --quiet                   Do not print to stdout
 ```
 
 ### Example

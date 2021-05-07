@@ -8,7 +8,7 @@ import (
 
 const (
 	ToolName    string = "coinspy"
-	ToolVersion string = "0.1.0"
+	ToolVersion string = "0.2.0"
 	ToolID      string = ToolName + "/" + ToolVersion
 	ToolURL     string = "https://gitlab.com/rbrt-weiler/coinspy"
 
