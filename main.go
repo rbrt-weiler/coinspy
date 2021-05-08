@@ -17,6 +17,8 @@ func init() {
 
 func main() {
 	var provider providers.Provider
+	var providerName string
+	var markets []string
 	var rates types.ExchangeRates
 	var wg sync.WaitGroup
 	var resultSet []string
@@ -26,17 +28,33 @@ func main() {
 
 	core.CheckArguments()
 
-	provider = providers.Cryptowatch()
-	//provider = providers.Coingecko()
-	markets := strings.Split(config.Markets, ",")
 	coins := strings.Split(config.Coins, ",")
 	fiats := strings.Split(config.Fiats, ",")
 
-	for _, market := range markets {
-		for _, coin := range coins {
-			for _, fiat := range fiats {
-				wg.Add(1)
-				go provider.FetchRateSynced(&rates, market, coin, fiat, &wg)
+	for _, singleProvider := range strings.Split(config.Providers, ",") {
+		if strings.Contains(singleProvider, "/") {
+			parts := strings.Split(singleProvider, "/")
+			providerName = parts[0]
+			markets = parts[1:]
+		} else {
+			providerName = singleProvider
+			markets = []string{"default"}
+		}
+		switch strings.ToLower(providerName) {
+		case "coingecko":
+			provider = providers.Coingecko()
+		case "cryptowatch":
+			provider = providers.Cryptowatch()
+		default:
+			cons.Fprintf(os.Stderr, "Error: Provider %s is unknown.\n", providerName)
+			os.Exit(core.ErrGeneric)
+		}
+		for _, market := range markets {
+			for _, coin := range coins {
+				for _, fiat := range fiats {
+					wg.Add(1)
+					go provider.FetchRateSynced(&rates, market, coin, fiat, &wg)
+				}
 			}
 		}
 	}

@@ -32,8 +32,8 @@ func LoadEnv() {
 
 func SetupFlags() {
 	LoadEnv()
-	//pflag.StringVarP(&config.Provider, "provider", "P", "Cryptowatch", "Exchange rate provider to use")
-	pflag.StringVarP(&Config.Markets, "markets", "M", envordef.StringVal("COINSPY_MARKETS", "Kraken"), "Markets to use with multi-market providers (comma-seperated)")
+	pflag.StringVarP(&Config.Providers, "provider", "P", envordef.StringVal("COINSPY_PROVIDER", "Cryptowatch/Kraken"), "Exchange rate provider to use")
+	//pflag.StringVarP(&Config.Markets, "markets", "M", envordef.StringVal("COINSPY_MARKETS", "Kraken"), "Markets to use with multi-market providers (comma-seperated)")
 	pflag.StringVarP(&Config.Coins, "coins", "C", envordef.StringVal("COINSPY_COINS", ""), "Coins to fetch rates for")
 	pflag.StringVarP(&Config.Fiats, "fiats", "F", envordef.StringVal("COINSPY_FIATS", ""), "Fiats to fetch rates for")
 	pflag.StringVar(&Config.Pushover.Token, "pushover-token", envordef.StringVal("COINSPY_PUSHOVER_TOKEN", ""), "Token for Pushover API access")
