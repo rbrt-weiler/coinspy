@@ -7,7 +7,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/go-resty/resty/v2"
+	resty "github.com/go-resty/resty/v2"
+
 	"gitlab.com/rbrt-weiler/coinspy/types"
 )
 
