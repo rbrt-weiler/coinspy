@@ -49,7 +49,7 @@ func (p Cryptowatch) FetchRate(market string, coin string, fiat string) (rate ty
 		}
 	}
 
-	return types.ExchangeRate{Provider: "Cryptowatch", Market: market, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: rateValue, Error: err}, err
+	return types.ExchangeRate{Provider: ProviderName, Market: market, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: rateValue, Error: err}, err
 }
 
 func (p Cryptowatch) FetchRateSynced(rates *types.ExchangeRates, market string, coin string, fiat string, wg *sync.WaitGroup) {
