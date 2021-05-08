@@ -9,16 +9,17 @@ import (
 )
 
 type Provider interface {
-	FetchRate(market string, coin string, fiat string) (types.ExchangeRate, error)
-	FetchRateSynced(rates *types.ExchangeRates, market string, coin string, fiat string, wg *sync.WaitGroup)
+	SetMarket(market string) error
+	FetchRate(coin string, fiat string) (types.ExchangeRate, error)
+	FetchRateSynced(coin string, fiat string, rates *types.ExchangeRates, wg *sync.WaitGroup)
 }
 
-func Coingecko() (p Provider) {
-	p = coingecko.New()
-	return
+func Coingecko() (p *coingecko.Coingecko) {
+	provider := coingecko.New()
+	return &provider
 }
 
-func Cryptowatch() (p Provider) {
-	p = cryptowatch.New()
-	return
+func Cryptowatch() (p *cryptowatch.Cryptowatch) {
+	provider := cryptowatch.New()
+	return &provider
 }

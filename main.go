@@ -50,10 +50,11 @@ func main() {
 			os.Exit(core.ErrGeneric)
 		}
 		for _, market := range markets {
+			provider.SetMarket(market)
 			for _, coin := range coins {
 				for _, fiat := range fiats {
 					wg.Add(1)
-					go provider.FetchRateSynced(&rates, market, coin, fiat, &wg)
+					go provider.FetchRateSynced(coin, fiat, &rates, &wg)
 				}
 			}
 		}

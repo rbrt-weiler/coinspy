@@ -19,12 +19,14 @@ const (
 
 type Coingecko struct {
 	client *resty.Client
+	market string
 	coins  CoinList
 	Error  error
 }
 
 func New() (p Coingecko) {
 	p.client = resty.New()
+	p.market = "default"
 	p.Error = p.PopulateCoinList()
 	return
 }
@@ -64,7 +66,11 @@ func (p *Coingecko) SymbolToID(symbol string) (id string, err error) {
 	return
 }
 
-func (p Coingecko) FetchRate(market string, coin string, fiat string) (rate types.ExchangeRate, err error) {
+func (p *Coingecko) SetMarket(market string) (err error) {
+	return nil
+}
+
+func (p *Coingecko) FetchRate(coin string, fiat string) (rate types.ExchangeRate, err error) {
 	var coinID string
 	var resp *resty.Response
 	var priceList Prices
@@ -90,11 +96,11 @@ func (p Coingecko) FetchRate(market string, coin string, fiat string) (rate type
 		return
 	}
 
-	return types.ExchangeRate{Provider: ProviderName, Market: market, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: priceList[coinID][fiatID], Error: err}, err
+	return types.ExchangeRate{Provider: ProviderName, Market: p.market, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: priceList[coinID][fiatID], Error: err}, err
 }
 
-func (p Coingecko) FetchRateSynced(rates *types.ExchangeRates, market string, coin string, fiat string, wg *sync.WaitGroup) {
-	rate, err := p.FetchRate(market, coin, fiat)
+func (p *Coingecko) FetchRateSynced(coin string, fiat string, rates *types.ExchangeRates, wg *sync.WaitGroup) {
+	rate, err := p.FetchRate(coin, fiat)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %s\n", err)
 	}
