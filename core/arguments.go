@@ -32,7 +32,7 @@ func LoadEnv() {
 
 func SetupFlags() {
 	LoadEnv()
-	pflag.StringVarP(&Config.Providers, "provider", "P", envordef.StringVal("COINSPY_PROVIDER", "Cryptowatch/Kraken"), "Exchange rate provider to use")
+	pflag.StringVarP(&Config.Providers, "providers", "P", envordef.StringVal("COINSPY_PROVIDERS", "Cryptowatch/Kraken"), "Exchange rate providers to use")
 	//pflag.StringVarP(&Config.Markets, "markets", "M", envordef.StringVal("COINSPY_MARKETS", "Kraken"), "Markets to use with multi-market providers (comma-seperated)")
 	pflag.StringVarP(&Config.Coins, "coins", "C", envordef.StringVal("COINSPY_COINS", ""), "Coins to fetch rates for")
 	pflag.StringVarP(&Config.Fiats, "fiats", "F", envordef.StringVal("COINSPY_FIATS", ""), "Fiats to fetch rates for")
