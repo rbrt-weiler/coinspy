@@ -33,12 +33,13 @@ func LoadEnv() {
 func SetupFlags() {
 	LoadEnv()
 	pflag.StringVarP(&Config.Providers, "providers", "P", envordef.StringVal("COINSPY_PROVIDERS", "Cryptowatch/Kraken"), "Exchange rate providers to use")
-	//pflag.StringVarP(&Config.Markets, "markets", "M", envordef.StringVal("COINSPY_MARKETS", "Kraken"), "Markets to use with multi-market providers (comma-seperated)")
 	pflag.StringVarP(&Config.Coins, "coins", "C", envordef.StringVal("COINSPY_COINS", ""), "Coins to fetch rates for")
 	pflag.StringVarP(&Config.Fiats, "fiats", "F", envordef.StringVal("COINSPY_FIATS", ""), "Fiats to fetch rates for")
 	pflag.StringVar(&Config.Pushover.Token, "pushover-token", envordef.StringVal("COINSPY_PUSHOVER_TOKEN", ""), "Token for Pushover API access")
 	pflag.StringVar(&Config.Pushover.User, "pushover-user", envordef.StringVal("COINSPY_PUSHOVER_USER", ""), "User for Pushover API access")
 	pflag.BoolVarP(&Config.Quiet, "quiet", "q", envordef.BoolVal("COINSPY_QUIET", false), "Do not print to stdout")
+	pflag.BoolVar(&Config.CompactOutput, "output-compact", envordef.BoolVal("COINSPY_OUTPUT_COMPACT", false), "Use compact output format")
+	pflag.BoolVar(&Config.VeryCompactOutput, "output-very-compact", envordef.BoolVal("COINSPY_OUTPUT_VERY_COMPACT", false), "Use very compact output format")
 	pflag.Usage = func() {
 		Cons.Fprintf(os.Stderr, "%s\n", ToolID)
 		Cons.Fprintf(os.Stderr, "%s\n", ToolURL)

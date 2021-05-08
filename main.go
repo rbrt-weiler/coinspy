@@ -64,7 +64,13 @@ func main() {
 	rates.Sort()
 	for _, rate := range rates.Rates {
 		if rate.Error == nil {
-			resultSet = append(resultSet, rate.String())
+			if config.VeryCompactOutput {
+				resultSet = append(resultSet, rate.StringVeryCompact())
+			} else if config.CompactOutput {
+				resultSet = append(resultSet, rate.StringCompact())
+			} else {
+				resultSet = append(resultSet, rate.String())
+			}
 		}
 	}
 

@@ -2,7 +2,6 @@ package types
 
 type AppConfig struct {
 	Providers string
-	Markets   string
 	Coins     string
 	Fiats     string
 	Pushover  struct {
@@ -10,5 +9,7 @@ type AppConfig struct {
 		User    string
 		Enabled bool
 	}
-	Quiet bool
+	Quiet             bool
+	CompactOutput     bool
+	VeryCompactOutput bool
 }
