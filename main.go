@@ -27,6 +27,7 @@ func main() {
 	core.CheckArguments()
 
 	provider = providers.Cryptowatch()
+	//provider = providers.Coingecko()
 	markets := strings.Split(config.Markets, ",")
 	coins := strings.Split(config.Coins, ",")
 	fiats := strings.Split(config.Fiats, ",")
