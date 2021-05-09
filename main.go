@@ -41,6 +41,8 @@ func main() {
 			markets = []string{"default"}
 		}
 		switch strings.ToLower(providerName) {
+		case "coingate":
+			provider = providers.CoinGate()
 		case "coingecko":
 			provider = providers.Coingecko()
 		case "cryptowatch":
