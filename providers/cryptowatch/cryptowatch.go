@@ -17,8 +17,9 @@ const (
 )
 
 type Cryptowatch struct {
-	client *resty.Client
-	market string
+	client             *resty.Client
+	market             string
+	providerWithMarket string
 }
 
 func New() (p Cryptowatch) {
@@ -28,6 +29,7 @@ func New() (p Cryptowatch) {
 
 func (p *Cryptowatch) SetMarket(market string) (err error) {
 	p.market = market
+	p.providerWithMarket = fmt.Sprintf("%s/%s", ProviderName, p.market)
 	return nil
 }
 
@@ -49,13 +51,13 @@ func (p *Cryptowatch) FetchRate(coin string, fiat string) (rate types.ExchangeRa
 			return
 		}
 		if apiResult.Error != "" {
-			err = fmt.Errorf("%s (%s/%s on %s/%s; %f allowance remaining)", apiResult.Error, coin, fiat, ProviderName, p.market, apiResult.Allowance.Remaining)
+			err = fmt.Errorf("%s (%s/%s on %s; %f allowance remaining)", apiResult.Error, coin, fiat, p.providerWithMarket, apiResult.Allowance.Remaining)
 		} else {
 			rateValue = apiResult.Result.Price
 		}
 	}
 
-	return types.ExchangeRate{Provider: ProviderName, Market: p.market, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: rateValue, Error: err}, err
+	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: rateValue, Error: err}, err
 }
 
 func (p *Cryptowatch) FetchRateSynced(coin string, fiat string, rates *types.ExchangeRates, wg *sync.WaitGroup) {

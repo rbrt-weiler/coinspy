@@ -18,15 +18,17 @@ const (
 )
 
 type Coingecko struct {
-	client *resty.Client
-	market string
-	coins  CoinList
-	Error  error
+	client             *resty.Client
+	market             string
+	providerWithMarket string
+	coins              CoinList
+	Error              error
 }
 
 func New() (p Coingecko) {
 	p.client = resty.New()
 	p.market = "default"
+	p.providerWithMarket = ProviderName
 	p.Error = p.PopulateCoinList()
 	return
 }
@@ -96,7 +98,7 @@ func (p *Coingecko) FetchRate(coin string, fiat string) (rate types.ExchangeRate
 		return
 	}
 
-	return types.ExchangeRate{Provider: ProviderName, Market: p.market, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: priceList[coinID][fiatID], Error: err}, err
+	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: priceList[coinID][fiatID], Error: err}, err
 }
 
 func (p *Coingecko) FetchRateSynced(coin string, fiat string, rates *types.ExchangeRates, wg *sync.WaitGroup) {

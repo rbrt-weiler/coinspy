@@ -20,16 +20,18 @@ const (
 )
 
 type CoinGate struct {
-	client     *resty.Client
-	market     string
-	prices     Prices
-	pricesAsOf time.Time
-	Error      error
+	client             *resty.Client
+	market             string
+	providerWithMarket string
+	prices             Prices
+	pricesAsOf         time.Time
+	Error              error
 }
 
 func New() (p CoinGate) {
 	p.client = resty.New()
 	p.market = "default"
+	p.providerWithMarket = ProviderName
 	p.FetchPrices()
 	return
 }
@@ -77,7 +79,7 @@ func (p *CoinGate) FetchRate(coin string, fiat string) (rate types.ExchangeRate,
 	fiatID := strings.ToUpper(fiat)
 	coinID := strings.ToUpper(coin)
 	if rateString, ok = p.prices[coinID][fiatID]; !ok {
-		err = fmt.Errorf("rate %s/%s is unknown to %s/%s", coinID, fiatID, ProviderName, p.market)
+		err = fmt.Errorf("rate %s/%s is unknown to %s", coinID, fiatID, p.providerWithMarket)
 		return
 	}
 	rateFloat, err = strconv.ParseFloat(rateString, 64)
@@ -86,7 +88,7 @@ func (p *CoinGate) FetchRate(coin string, fiat string) (rate types.ExchangeRate,
 		return
 	}
 
-	return types.ExchangeRate{Provider: ProviderName, Market: p.market, AsOf: p.pricesAsOf, Coin: coin, Fiat: fiat, Rate: rateFloat, Error: err}, err
+	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: p.pricesAsOf, Coin: coin, Fiat: fiat, Rate: rateFloat, Error: err}, err
 }
 
 func (p *CoinGate) FetchRateSynced(coin string, fiat string, rates *types.ExchangeRates, wg *sync.WaitGroup) {
