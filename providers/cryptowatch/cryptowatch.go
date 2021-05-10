@@ -61,12 +61,13 @@ func (p *Cryptowatch) FetchRate(coin string, fiat string) (rate types.ExchangeRa
 }
 
 func (p *Cryptowatch) FetchRateSynced(coin string, fiat string, rates *types.ExchangeRates, wg *sync.WaitGroup) {
+	defer wg.Done()
 	rate, err := p.FetchRate(coin, fiat)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %s\n", err)
+		return
 	}
 	rates.Mutex.Lock()
 	rates.Rates = append(rates.Rates, rate)
 	rates.Mutex.Unlock()
-	wg.Done()
 }

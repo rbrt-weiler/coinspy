@@ -64,6 +64,9 @@ func (p *Coingecko) SymbolToID(symbol string) (id string, err error) {
 			id = coin.ID
 		}
 	}
+	if id == "" {
+		err = fmt.Errorf("symbol unknown: %s", symbol)
+	}
 
 	return
 }
@@ -81,6 +84,7 @@ func (p *Coingecko) FetchRate(coin string, fiat string) (rate types.ExchangeRate
 
 	coinID, err = p.SymbolToID(coin)
 	if err != nil {
+		err = fmt.Errorf("could not find coin: %s", err)
 		return
 	}
 	fiatID := strings.ToLower(fiat)
@@ -90,11 +94,13 @@ func (p *Coingecko) FetchRate(coin string, fiat string) (rate types.ExchangeRate
 		SetQueryParam("vs_currencies", fiatID).
 		Get(apiURL)
 	if err != nil {
+		err = fmt.Errorf("could not fetch rate for %s/%s: %s", coinID, fiatID, err)
 		return
 	}
 
 	err = json.Unmarshal(resp.Body(), &priceList)
 	if err != nil {
+		err = fmt.Errorf("could not unmarshal API response: %s", err)
 		return
 	}
 
@@ -102,12 +108,13 @@ func (p *Coingecko) FetchRate(coin string, fiat string) (rate types.ExchangeRate
 }
 
 func (p *Coingecko) FetchRateSynced(coin string, fiat string, rates *types.ExchangeRates, wg *sync.WaitGroup) {
+	defer wg.Done()
 	rate, err := p.FetchRate(coin, fiat)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %s\n", err)
+		return
 	}
 	rates.Mutex.Lock()
 	rates.Rates = append(rates.Rates, rate)
 	rates.Mutex.Unlock()
-	wg.Done()
 }
