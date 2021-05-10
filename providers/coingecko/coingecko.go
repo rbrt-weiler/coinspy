@@ -65,7 +65,7 @@ func (p *Coingecko) SymbolToID(symbol string) (id string, err error) {
 		}
 	}
 	if id == "" {
-		err = fmt.Errorf("symbol unknown: %s", symbol)
+		err = fmt.Errorf("symbol unknown to %s: %s", ProviderName, symbol)
 	}
 
 	return
