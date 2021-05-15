@@ -9,6 +9,9 @@ type AppConfig struct {
 		User    string
 		Enabled bool
 	}
+	Disable struct {
+		Pushover bool
+	}
 	Quiet             bool
 	CompactOutput     bool
 	VeryCompactOutput bool

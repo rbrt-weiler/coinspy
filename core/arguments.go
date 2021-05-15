@@ -37,6 +37,7 @@ func SetupFlags() {
 	pflag.StringVarP(&Config.Fiats, "fiats", "F", envordef.StringVal("COINSPY_FIATS", ""), "Fiats to fetch rates for")
 	pflag.StringVar(&Config.Pushover.Token, "pushover-token", envordef.StringVal("COINSPY_PUSHOVER_TOKEN", ""), "Token for Pushover API access")
 	pflag.StringVar(&Config.Pushover.User, "pushover-user", envordef.StringVal("COINSPY_PUSHOVER_USER", ""), "User for Pushover API access")
+	pflag.BoolVar(&Config.Disable.Pushover, "disable-pushover", envordef.BoolVal("COINSPY_DISABLE_PUSHOVER", false), "Disable Pushover notifications")
 	pflag.BoolVarP(&Config.Quiet, "quiet", "q", envordef.BoolVal("COINSPY_QUIET", false), "Do not print to stdout")
 	pflag.BoolVar(&Config.CompactOutput, "output-compact", envordef.BoolVal("COINSPY_OUTPUT_COMPACT", false), "Use compact output format")
 	pflag.BoolVar(&Config.VeryCompactOutput, "output-very-compact", envordef.BoolVal("COINSPY_OUTPUT_VERY_COMPACT", false), "Use very compact output format")
@@ -64,13 +65,15 @@ func CheckArguments() {
 		Cons.Fprintf(os.Stderr, "Error: No fiats provided.\n")
 		os.Exit(ErrGeneric)
 	}
-	poTokenLen := len(Config.Pushover.Token)
-	poUserLen := len(Config.Pushover.User)
-	if poTokenLen > 0 || poUserLen > 0 {
-		Config.Pushover.Enabled = true
-		if poTokenLen == 0 || poUserLen == 0 {
-			Cons.Fprintf(os.Stderr, "Error: Pushover requires token and user.\n")
-			os.Exit(ErrGeneric)
+	if !Config.Disable.Pushover {
+		poTokenLen := len(Config.Pushover.Token)
+		poUserLen := len(Config.Pushover.User)
+		if poTokenLen > 0 || poUserLen > 0 {
+			Config.Pushover.Enabled = true
+			if poTokenLen == 0 || poUserLen == 0 {
+				Cons.Fprintf(os.Stderr, "Error: Pushover requires token and user.\n")
+				os.Exit(ErrGeneric)
+			}
 		}
 	}
 }

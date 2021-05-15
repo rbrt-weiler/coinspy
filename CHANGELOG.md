@@ -11,7 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 1. Configuration via environment file.
 1. New provider Coingecko.
 1. Support for multiple providers at once.
+1. Options for shorter output formats.
 1. New provider CoinGate.
+1. New option `--disable-pushover`.
 
 ## [0.2.0] - 2021-05-08
 
