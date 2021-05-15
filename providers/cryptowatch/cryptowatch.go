@@ -24,6 +24,7 @@ type Cryptowatch struct {
 
 func New() (p Cryptowatch) {
 	p.client = resty.New()
+	p.SetMarket("Kraken")
 	return p
 }
 
