@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 	"sync"
 
@@ -14,6 +15,7 @@ import (
 
 const (
 	ProviderName string = "Cryptowatch"
+	APIBaseURL   string = "https://api.cryptowat.ch"
 )
 
 type Cryptowatch struct {
@@ -22,10 +24,52 @@ type Cryptowatch struct {
 	providerWithMarket string
 }
 
+func uniqueStrings(input []string) (output []string) {
+	// thanks to https://kylewbanks.com/blog/creating-unique-slices-in-go for this
+	m := make(map[string]bool)
+
+	for _, val := range input {
+		if _, ok := m[val]; !ok {
+			m[val] = true
+			output = append(output, val)
+		}
+	}
+
+	return
+}
+
 func New() (p Cryptowatch) {
 	p.client = resty.New()
 	p.SetMarket("Kraken")
 	return p
+}
+
+func ListMarkets() (markets []string, err error) {
+	var apiURL string
+	var resp *resty.Response
+	var apiResult Markets
+
+	client := resty.New()
+
+	apiURL = fmt.Sprintf("%s/markets", APIBaseURL)
+	resp, err = client.R().Get(apiURL)
+	if err != nil {
+		err = fmt.Errorf("could not fetch list of markets: %s", err)
+	} else {
+		err = json.Unmarshal(resp.Body(), &apiResult)
+		if err != nil {
+			err = fmt.Errorf("could not unmarshal JSON: %s", err)
+			return
+		}
+	}
+
+	for _, market := range apiResult.Result {
+		markets = append(markets, market.Exchange)
+	}
+	markets = uniqueStrings(markets)
+	sort.Strings(markets)
+
+	return
 }
 
 func (p *Cryptowatch) SetMarket(market string) (err error) {

@@ -26,6 +26,24 @@ func main() {
 	config := &core.Config
 	cons := &core.Cons
 
+	if config.List.Providers {
+		prov, err := core.ProviderList()
+		if err != nil {
+			cons.Fprintf(os.Stderr, "Error: %s\n", err)
+			os.Exit(core.ErrGeneric)
+		}
+		for p, mar := range prov {
+			for _, m := range mar {
+				if m != "default" {
+					cons.Printf("%s/%s\n", p, m)
+				} else {
+					cons.Printf("%s\n", p)
+				}
+			}
+		}
+		os.Exit(core.ErrSuccess)
+	}
+
 	core.CheckArguments()
 
 	coins := strings.Split(config.Coins, ",")

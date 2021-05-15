@@ -32,6 +32,7 @@ func LoadEnv() {
 
 func SetupFlags() {
 	LoadEnv()
+	pflag.BoolVar(&Config.List.Providers, "list-providers", false, "List possible providers")
 	pflag.StringVarP(&Config.Providers, "providers", "P", envordef.StringVal("COINSPY_PROVIDERS", "Cryptowatch/Kraken"), "Exchange rate providers to use")
 	pflag.StringVarP(&Config.Coins, "coins", "C", envordef.StringVal("COINSPY_COINS", ""), "Coins to fetch rates for")
 	pflag.StringVarP(&Config.Fiats, "fiats", "F", envordef.StringVal("COINSPY_FIATS", ""), "Fiats to fetch rates for")
@@ -51,11 +52,6 @@ func SetupFlags() {
 		Cons.Fprintf(os.Stderr, "\n")
 		Cons.Fprintf(os.Stderr, "Available options:\n")
 		pflag.PrintDefaults()
-		Cons.Fprintf(os.Stderr, "\n")
-		Cons.Fprintf(os.Stderr, "Valid providers are:\n")
-		Cons.Fprintf(os.Stderr, "  - CoinGate\n")
-		Cons.Fprintf(os.Stderr, "  - Coingecko\n")
-		Cons.Fprintf(os.Stderr, "  - Crpytowatch\n")
 		Cons.Fprintf(os.Stderr, "\n")
 		Cons.Fprintf(os.Stderr, "For coins and fiats, any well-known symbol (for example BTC for Bitcoin, EUR for Euro) can be used.\n")
 		Cons.Fprintf(os.Stderr, "\n")

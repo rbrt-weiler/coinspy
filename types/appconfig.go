@@ -1,6 +1,9 @@
 package types
 
 type AppConfig struct {
+	List struct {
+		Providers bool
+	}
 	Providers string
 	Coins     string
 	Fiats     string
