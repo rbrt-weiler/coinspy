@@ -32,26 +32,14 @@ func listProviders() {
 	os.Exit(core.ErrSuccess)
 }
 
-func init() {
-	core.SetupFlags()
-}
-
-func main() {
-	var provider providers.Provider
+func fetchRates(rates *types.ExchangeRates) {
 	var providerName string
 	var markets []string
-	var rates types.ExchangeRates
+	var provider providers.Provider
 	var wg sync.WaitGroup
-	var resultSet []string
 
 	config := &core.Config
 	cons := &core.Cons
-
-	if config.List.Providers {
-		listProviders()
-	}
-
-	core.CheckArguments()
 
 	coins := strings.Split(config.Coins, ",")
 	fiats := strings.Split(config.Fiats, ",")
@@ -81,12 +69,32 @@ func main() {
 			for _, coin := range coins {
 				for _, fiat := range fiats {
 					wg.Add(1)
-					go provider.FetchRateSynced(coin, fiat, &rates, &wg)
+					go provider.FetchRateSynced(coin, fiat, rates, &wg)
 				}
 			}
 		}
 	}
 	wg.Wait()
+}
+
+func init() {
+	core.SetupFlags()
+}
+
+func main() {
+	var rates types.ExchangeRates
+	var resultSet []string
+
+	config := &core.Config
+	cons := &core.Cons
+
+	if config.List.Providers {
+		listProviders()
+	}
+
+	core.CheckArguments()
+
+	fetchRates(&rates)
 
 	rates.Sort()
 	for _, rate := range rates.Rates {
