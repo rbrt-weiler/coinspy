@@ -11,6 +11,27 @@ import (
 	"gitlab.com/rbrt-weiler/coinspy/types"
 )
 
+func listProviders() {
+	cons := &core.Cons
+
+	prov, err := core.ProviderList()
+	if err != nil {
+		cons.Fprintf(os.Stderr, "Error: %s\n", err)
+		os.Exit(core.ErrGeneric)
+	}
+	for p, mar := range prov {
+		for _, m := range mar {
+			if m != "default" {
+				cons.Printf("%s/%s\n", p, m)
+			} else {
+				cons.Printf("%s\n", p)
+			}
+		}
+	}
+
+	os.Exit(core.ErrSuccess)
+}
+
 func init() {
 	core.SetupFlags()
 }
@@ -27,21 +48,7 @@ func main() {
 	cons := &core.Cons
 
 	if config.List.Providers {
-		prov, err := core.ProviderList()
-		if err != nil {
-			cons.Fprintf(os.Stderr, "Error: %s\n", err)
-			os.Exit(core.ErrGeneric)
-		}
-		for p, mar := range prov {
-			for _, m := range mar {
-				if m != "default" {
-					cons.Printf("%s/%s\n", p, m)
-				} else {
-					cons.Printf("%s\n", p)
-				}
-			}
-		}
-		os.Exit(core.ErrSuccess)
+		listProviders()
 	}
 
 	core.CheckArguments()
