@@ -77,6 +77,25 @@ func fetchRates(rates *types.ExchangeRates) {
 	wg.Wait()
 }
 
+func ratesToStrings(rates *types.ExchangeRates) (resultSet []string) {
+	config := &core.Config
+
+	rates.Sort()
+	for _, rate := range rates.Rates {
+		if rate.Error == nil {
+			if config.VeryCompactOutput {
+				resultSet = append(resultSet, rate.StringVeryCompact())
+			} else if config.CompactOutput {
+				resultSet = append(resultSet, rate.StringCompact())
+			} else {
+				resultSet = append(resultSet, rate.String())
+			}
+		}
+	}
+
+	return
+}
+
 func init() {
 	core.SetupFlags()
 }
@@ -95,19 +114,7 @@ func main() {
 	core.CheckArguments()
 
 	fetchRates(&rates)
-
-	rates.Sort()
-	for _, rate := range rates.Rates {
-		if rate.Error == nil {
-			if config.VeryCompactOutput {
-				resultSet = append(resultSet, rate.StringVeryCompact())
-			} else if config.CompactOutput {
-				resultSet = append(resultSet, rate.StringCompact())
-			} else {
-				resultSet = append(resultSet, rate.String())
-			}
-		}
-	}
+	resultSet = ratesToStrings(&rates)
 
 	if !config.Quiet {
 		for _, line := range resultSet {
