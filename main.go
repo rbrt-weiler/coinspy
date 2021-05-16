@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"sync"
@@ -32,10 +33,26 @@ func listProviders() {
 	os.Exit(core.ErrSuccess)
 }
 
+func initializeProvider(providerName string) (provider providers.Provider, err error) {
+	switch strings.ToLower(providerName) {
+	case "coingate":
+		provider = providers.CoinGate()
+	case "coingecko":
+		provider = providers.Coingecko()
+	case "cryptowatch":
+		provider = providers.Cryptowatch()
+	default:
+		err = fmt.Errorf("provider %s is unknown", providerName)
+	}
+
+	return
+}
+
 func fetchRates() (rates types.ExchangeRates) {
 	var providerName string
 	var markets []string
 	var provider providers.Provider
+	var err error
 	var wg sync.WaitGroup
 
 	config := &core.Config
@@ -53,15 +70,9 @@ func fetchRates() (rates types.ExchangeRates) {
 			providerName = singleProvider
 			markets = []string{"default"}
 		}
-		switch strings.ToLower(providerName) {
-		case "coingate":
-			provider = providers.CoinGate()
-		case "coingecko":
-			provider = providers.Coingecko()
-		case "cryptowatch":
-			provider = providers.Cryptowatch()
-		default:
-			cons.Fprintf(os.Stderr, "Error: Provider %s is unknown.\n", providerName)
+		provider, err = initializeProvider(providerName)
+		if err != nil {
+			cons.Fprintf(os.Stderr, "Error: %s\n", err)
 			os.Exit(core.ErrGeneric)
 		}
 		for _, market := range markets {
