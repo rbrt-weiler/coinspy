@@ -32,7 +32,7 @@ func listProviders() {
 	os.Exit(core.ErrSuccess)
 }
 
-func fetchRates(rates *types.ExchangeRates) {
+func fetchRates() (rates types.ExchangeRates) {
 	var providerName string
 	var markets []string
 	var provider providers.Provider
@@ -69,12 +69,14 @@ func fetchRates(rates *types.ExchangeRates) {
 			for _, coin := range coins {
 				for _, fiat := range fiats {
 					wg.Add(1)
-					go provider.FetchRateSynced(coin, fiat, rates, &wg)
+					go provider.FetchRateSynced(coin, fiat, &rates, &wg)
 				}
 			}
 		}
 	}
 	wg.Wait()
+
+	return
 }
 
 func ratesToStrings(rates *types.ExchangeRates) (resultSet []string) {
@@ -113,7 +115,7 @@ func main() {
 
 	core.CheckArguments()
 
-	fetchRates(&rates)
+	rates = fetchRates()
 	resultSet = ratesToStrings(&rates)
 
 	if !config.Quiet {
@@ -121,7 +123,6 @@ func main() {
 			cons.Println(line)
 		}
 	}
-
 	if config.Pushover.Enabled {
 		poErr := core.SendPushoverMessage(config.Pushover.Token, config.Pushover.User, strings.Join(resultSet, "\r\n"), time.Now())
 		if poErr != nil {
