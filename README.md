@@ -1,5 +1,10 @@
 # Coinspy
 
+[![CodeFactor](https://www.codefactor.io/repository/github/rbrt-weiler/coinspy/badge/master)](https://www.codefactor.io/repository/github/rbrt-weiler/coinspy/overview/master)
+[![Go Report Card](https://goreportcard.com/badge/gitlab.com/rbrt-weiler/coinspy)](https://goreportcard.com/report/gitlab.com/rbrt-weiler/coinspy)
+[![build:master](https://img.shields.io/gitlab/pipeline/rbrt-weiler/coinspy/master?label=build%3Amaster)](https://gitlab.com/rbrt-weiler/coinspy/tree/master)
+[![pkg.go.dev](https://pkg.go.dev/badge/gitlab.com/rbrt-weiler/coinspy.svg)](https://pkg.go.dev/gitlab.com/rbrt-weiler/coinspy)
+
 Coinspy aids crypto-currency investors by fetching exchange rates and pushing them to devices via Pushover. For fetching exchange rates, multiple providers and markets are supported.
 
 ## Usage
