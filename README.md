@@ -105,13 +105,13 @@ Precompiled binaries for Windows, Linux and macOS are available as _deploy-tagge
 
 Coinspy has been developed and tested with [go1.16](https://golang.org/doc/go1.16).
 
-### GNU make
-
-This project includes a Makefile for GNU make. Run `make` to get help; essentially `make build` will produce a binary for your current system in the directory _out_, but the Makefile provides way more functionality.
-
 ### Go Toolchain
 
 Use `go run .` to run the tool directly or `go build -o coinspy .` to compile a binary. Dependencies are managed via Go modules and thus automatically handled at compile time.
+
+### GNU make
+
+This project includes a Makefile for GNU make. Run `make` to get help; essentially `make build` will produce a binary for your current system in the directory _out_, but the Makefile provides way more functionality.
 
 ### Docker-based Builds
 
