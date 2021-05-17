@@ -8,7 +8,7 @@ import (
 
 const (
 	// ToolName contains the name of the application.
-	ToolName string = "coinspy"
+	ToolName string = "Coinspy"
 	// ToolVersion contains the version number of the application.
 	ToolVersion string = "0.2.0"
 	// ToolID contains a user-agent-style representation of ToolName/ToolVersion.

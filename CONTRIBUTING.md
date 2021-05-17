@@ -1,4 +1,4 @@
-# Contributing to CoinSpy
+# Contributing to Coinspy
 
 Everyone is welcome to contribute to the project. Contributions may be anything that drives the project forward, with
 
@@ -26,7 +26,7 @@ In case that the latest working version of the software still cotains the bug yo
   * how you wanted to accomplish it.
 * That description MUST be extensive and precise enough to reproduce your activities.
 * The description MUST contain all relevant version numbers, at least
-  * the version of CoinSpy.
+  * the version of Coinspy.
 * The description SHOULD cotain a statement that you have followed above test instructions.
   * For absolute clarity, please include Go version and commit IDs.
 
