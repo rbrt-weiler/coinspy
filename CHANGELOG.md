@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+(Nothing at this point.)
+
+## [1.0.0] - 2021-05-17
+
 ### Added
 
 1. Configuration via environment file.
@@ -32,6 +36,7 @@ Initial public release.
 1. Fetch exchange rates for an arbitary number of coins and fiats from Cryptowatch.
 1. Support for multiple markets as supported by Cryptowatch.
 
-[Unreleased]: https://gitlab.com/rbrt-weiler/coinspy/-/compare/0.2.0...master
+[Unreleased]: https://gitlab.com/rbrt-weiler/coinspy/-/compare/1.0.0...master
+[1.0.0]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/1.0.0
 [0.2.0]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/0.2.0
 [0.1.0]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/0.1.0
