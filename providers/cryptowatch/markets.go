@@ -1,5 +1,6 @@
 package cryptowatch
 
+// Markets is used to unmarshal an API result containing the available markets.
 type Markets struct {
 	Result []struct {
 		ID       int    `json:"id"`

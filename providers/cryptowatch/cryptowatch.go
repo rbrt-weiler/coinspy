@@ -14,17 +14,22 @@ import (
 )
 
 const (
+	// ProviderName cotains the common name of the provider.
 	ProviderName string = "Cryptowatch"
-	APIBaseURL   string = "https://api.cryptowat.ch"
+	// APIBaseURL points to the basic API endpoint used for all requests.
+	APIBaseURL string = "https://api.cryptowat.ch"
 )
 
+// Cryptowatch is a specific implementation of a Provider.
 type Cryptowatch struct {
 	client             *resty.Client
 	market             string
 	providerWithMarket string
-	Error              error
+	// Error is used to convey possible errors.
+	Error error
 }
 
+// uniqueStrings filters a list of strings and returns a list of unique strings within that list.
 func uniqueStrings(input []string) (output []string) {
 	// thanks to https://kylewbanks.com/blog/creating-unique-slices-in-go for this
 	m := make(map[string]bool)
@@ -39,12 +44,14 @@ func uniqueStrings(input []string) (output []string) {
 	return
 }
 
+// New initializes and returns a usable Provider object.
 func New(c *resty.Client) (p Cryptowatch) {
 	p.client = c
 	p.Error = p.SetMarket("Kraken")
 	return p
 }
 
+// ListMarkets returns a list of all available markets.
 func ListMarkets() (markets []string, err error) {
 	var apiURL string
 	var resp *resty.Response
@@ -73,12 +80,15 @@ func ListMarkets() (markets []string, err error) {
 	return
 }
 
+// SetMarket sets the market that shall be queried.
+// TODO: Implement proper error handling.
 func (p *Cryptowatch) SetMarket(market string) (err error) {
 	p.market = market
 	p.providerWithMarket = fmt.Sprintf("%s/%s", ProviderName, p.market)
 	return nil
 }
 
+// FetchRate returns a single ExchangeRate.
 func (p *Cryptowatch) FetchRate(coin string, fiat string) (rate types.ExchangeRate, err error) {
 	var apiURL string
 	var resp *resty.Response
@@ -106,6 +116,7 @@ func (p *Cryptowatch) FetchRate(coin string, fiat string) (rate types.ExchangeRa
 	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: rateValue, Error: err}, err
 }
 
+// FetchRateSynced is a multi-threading implementation of FetchRate.
 func (p *Cryptowatch) FetchRateSynced(coin string, fiat string, rates *types.ExchangeRates, wg *sync.WaitGroup) {
 	defer wg.Done()
 	rate, err := p.FetchRate(coin, fiat)

@@ -6,11 +6,13 @@ import (
 	"sync"
 )
 
+// ExchangeRates is a multi-threading-safe list of multiple ExchangeRate objects.
 type ExchangeRates struct {
 	Mutex sync.Mutex
 	Rates []ExchangeRate
 }
 
+// Sort sorts the list of ExchangeRate objects by Coin-Fiat-Provider-Market.
 func (r *ExchangeRates) Sort() {
 	r.Mutex.Lock()
 	sort.Slice(r.Rates, func(i, j int) bool {

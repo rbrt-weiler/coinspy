@@ -1,5 +1,6 @@
 package cryptowatch
 
+// Result is used to unamrshal an API result containing a single exchange rate.
 type Result struct {
 	Result struct {
 		Price float64 `json:"price"`

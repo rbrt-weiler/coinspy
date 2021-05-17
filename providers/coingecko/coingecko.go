@@ -13,18 +13,23 @@ import (
 )
 
 const (
+	// ProviderName cotains the common name of the provider.
 	ProviderName string = "Coingecko"
-	APIBaseURL   string = "https://api.coingecko.com/api/v3"
+	// APIBaseURL points to the basic API endpoint used for all requests.
+	APIBaseURL string = "https://api.coingecko.com/api/v3"
 )
 
+// Coingecko is a specific implementation of a Provider.
 type Coingecko struct {
 	client             *resty.Client
 	market             string
 	providerWithMarket string
 	coins              CoinList
-	Error              error
+	// Error is used to convey possible errors.
+	Error error
 }
 
+// New initializes and returns a usable Provider object.
 func New(c *resty.Client) (p Coingecko) {
 	p.client = c
 	p.market = "default"
@@ -33,25 +38,27 @@ func New(c *resty.Client) (p Coingecko) {
 	return
 }
 
+// PopulateCoinList retrieves all coins known to Coingecko and stores that information for further use.
+// This is required for Coingecko because common currency symbols need to be mapped to Coingecko-specific IDs for FetchRate().
 func (p *Coingecko) PopulateCoinList() (err error) {
 	var resp *resty.Response
 
 	apiURL := fmt.Sprintf("%s/coins/list", APIBaseURL)
 	resp, err = p.client.R().Get(apiURL)
 	if err != nil {
-		err = fmt.Errorf("could not fetch exchange rate: %s", err)
+		err = fmt.Errorf("could not fetch list of coins: %s", err)
 		return
-	} else {
-		err = json.Unmarshal(resp.Body(), &p.coins)
-		if err != nil {
-			err = fmt.Errorf("could not unmarshal JSON: %s", err)
-			return
-		}
+	}
+	err = json.Unmarshal(resp.Body(), &p.coins)
+	if err != nil {
+		err = fmt.Errorf("could not unmarshal JSON: %s", err)
+		return
 	}
 
 	return
 }
 
+// SymbolToID returns the Coingecko-specific ID for a common currency symbol.
 func (p *Coingecko) SymbolToID(symbol string) (id string, err error) {
 	if p.coins == nil {
 		err = fmt.Errorf("list of coins not populated")
@@ -71,10 +78,12 @@ func (p *Coingecko) SymbolToID(symbol string) (id string, err error) {
 	return
 }
 
+// SetMarket does nothing, but needs to be implemented to satisfy the Provider interface.
 func (p *Coingecko) SetMarket(market string) (err error) {
 	return nil
 }
 
+// FetchRate returns a single ExchangeRate.
 func (p *Coingecko) FetchRate(coin string, fiat string) (rate types.ExchangeRate, err error) {
 	var coinID string
 	var resp *resty.Response
@@ -107,6 +116,7 @@ func (p *Coingecko) FetchRate(coin string, fiat string) (rate types.ExchangeRate
 	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: priceList[coinID][fiatID], Error: err}, err
 }
 
+// FetchRateSynced is a multi-threading implementation of FetchRate.
 func (p *Coingecko) FetchRateSynced(coin string, fiat string, rates *types.ExchangeRates, wg *sync.WaitGroup) {
 	defer wg.Done()
 	rate, err := p.FetchRate(coin, fiat)

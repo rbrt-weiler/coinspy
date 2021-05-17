@@ -10,6 +10,7 @@ import (
 	envordef "gitlab.com/rbrt-weiler/go-module-envordef"
 )
 
+// LoadEnv loads the env file, if available.
 func LoadEnv() {
 	// if envFileName exists in the current directory, load it
 	localEnvFile := fmt.Sprintf("./%s", EnvFileName)
@@ -30,6 +31,7 @@ func LoadEnv() {
 	}
 }
 
+// SetupFlags configures and parses all possible CLI arguments.
 func SetupFlags() {
 	LoadEnv()
 	pflag.BoolVar(&Config.List.Providers, "list-providers", false, "List possible providers")
@@ -61,6 +63,7 @@ func SetupFlags() {
 	pflag.Parse()
 }
 
+// CheckArguments performs a sanity check on the parsed CLI arguments.
 func CheckArguments() {
 	if Config.Coins == "" {
 		Cons.Fprintf(os.Stderr, "Error: No coins provided.\n")

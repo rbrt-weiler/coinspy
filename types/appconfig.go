@@ -1,5 +1,6 @@
 package types
 
+// AppConfig is used to store application configuration.
 type AppConfig struct {
 	List struct {
 		Providers bool

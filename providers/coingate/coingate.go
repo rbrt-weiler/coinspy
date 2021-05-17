@@ -15,19 +15,24 @@ import (
 )
 
 const (
+	// ProviderName cotains the common name of the provider.
 	ProviderName string = "CoinGate"
-	APIBaseURL   string = "https://api.coingate.com/v2"
+	// APIBaseURL points to the basic API endpoint used for all requests.
+	APIBaseURL string = "https://api.coingate.com/v2"
 )
 
+// CoinGate is a specific implementation of a Provider.
 type CoinGate struct {
 	client             *resty.Client
 	market             string
 	providerWithMarket string
 	prices             Prices
 	pricesAsOf         time.Time
-	Error              error
+	// Error is used to convey possible errors.
+	Error error
 }
 
+// New initializes and returns a usable Provider object.
 func New(c *resty.Client) (p CoinGate) {
 	p.client = c
 	p.market = "default"
@@ -36,6 +41,7 @@ func New(c *resty.Client) (p CoinGate) {
 	return
 }
 
+// FetchPrices retrieves all available exchange rates and stores them for further use.
 func (p *CoinGate) FetchPrices() (err error) {
 	var resp *resty.Response
 	var priceList Prices
@@ -59,10 +65,12 @@ func (p *CoinGate) FetchPrices() (err error) {
 	return
 }
 
+// SetMarket does nothing, but needs to be implemented to satisfy the Provider interface.
 func (p *CoinGate) SetMarket(market string) (err error) {
 	return nil
 }
 
+// FetchRate returns a single ExchangeRate.
 func (p *CoinGate) FetchRate(coin string, fiat string) (rate types.ExchangeRate, err error) {
 	var rateString string
 	var ok bool
@@ -91,6 +99,7 @@ func (p *CoinGate) FetchRate(coin string, fiat string) (rate types.ExchangeRate,
 	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: p.pricesAsOf, Coin: coin, Fiat: fiat, Rate: rateFloat, Error: err}, err
 }
 
+// FetchRateSynced is a multi-threading implementation of FetchRate.
 func (p *CoinGate) FetchRateSynced(coin string, fiat string, rates *types.ExchangeRates, wg *sync.WaitGroup) {
 	defer wg.Done()
 	rate, err := p.FetchRate(coin, fiat)

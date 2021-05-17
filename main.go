@@ -14,6 +14,7 @@ import (
 	"gitlab.com/rbrt-weiler/coinspy/types"
 )
 
+// listProviders prints all possible providers to stdout and exits the application.
 func listProviders() {
 	cons := &core.Cons
 
@@ -35,6 +36,7 @@ func listProviders() {
 	os.Exit(core.ErrSuccess)
 }
 
+// initializeProvider initializes and returns a provider object based on the name of the provider.
 func initializeProvider(providerName string, httpClient *resty.Client) (provider providers.Provider, err error) {
 	switch strings.ToLower(providerName) {
 	case "coingate":
@@ -50,6 +52,7 @@ func initializeProvider(providerName string, httpClient *resty.Client) (provider
 	return
 }
 
+// fetchRates fetches all requested exchange rates from all given providers, as per CLI arguments.
 func fetchRates() (rates types.ExchangeRates) {
 	var providerName string
 	var markets []string
@@ -98,6 +101,7 @@ func fetchRates() (rates types.ExchangeRates) {
 	return
 }
 
+// ratesToStrings turns the exchange rates into a list of strings, with compactness as defined by CLI arguments.
 func ratesToStrings(rates *types.ExchangeRates) (resultSet []string) {
 	config := &core.Config
 
@@ -117,10 +121,12 @@ func ratesToStrings(rates *types.ExchangeRates) (resultSet []string) {
 	return
 }
 
+// init is used to initialize the application.
 func init() {
 	core.SetupFlags()
 }
 
+// main ties everything together.
 func main() {
 	var rates types.ExchangeRates
 	var resultSet []string

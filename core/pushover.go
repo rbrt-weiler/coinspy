@@ -8,6 +8,7 @@ import (
 	resty "github.com/go-resty/resty/v2"
 )
 
+// SendPushoverMessage is used to send a Pushover notification.
 func SendPushoverMessage(token string, user string, message string, asOf time.Time) (err error) {
 	client := resty.New()
 	_, pushErr := client.R().
