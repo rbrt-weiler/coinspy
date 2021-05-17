@@ -4,6 +4,7 @@
 GOVERSION ?= 1.16 ## Set the Go version for Docker
 GOCMD := go
 GOFMT := $(GOCMD) fmt
+GOMOD := $(GOCMD) mod
 GOTEST := $(GOCMD) test
 GOBUILD := $(GOCMD) build
 CGO ?= 1 ## Enable / disable CGO support
@@ -57,6 +58,13 @@ help: ## Show this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  ${YELLOW}%-16s${RESET}%s\n", $$1, $$2}' $(MAKEFILE_LIST)
 	@echo ''
 
+tidy: ## Run go mod tidy
+ifneq (,$(suse_docker))
+	docker run --rm -v $(shell pwd):/app -w /app golang:$(sgoversion) $(GOMOD) tidy
+else
+	$(GOMOD) tidy
+endif
+
 fmt-go: ## Run gofmt on the project
 ifneq (,$(suse_docker))
 	docker run --rm -v $(shell pwd):/app -w /app golang:$(sgoversion) $(GOFMT) ./...
@@ -77,7 +85,7 @@ endif
 
 lint: lint-go ## Run all available linters
 
-pretty: fmt lint ## Run targets fmt and lint
+pretty: tidy fmt lint ## Run targets tidy, fmt and lint
 
 test: ## Run the tests of the project
 ifneq (,$(suse_docker))
