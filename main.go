@@ -76,7 +76,11 @@ func fetchRates() (rates types.ExchangeRates) {
 			os.Exit(core.ErrGeneric)
 		}
 		for _, market := range markets {
-			provider.SetMarket(market)
+			err = provider.SetMarket(market)
+			if err != nil {
+				cons.Fprintf(os.Stderr, "Error: %s\n", err)
+				os.Exit(core.ErrGeneric)
+			}
 			for _, coin := range coins {
 				for _, fiat := range fiats {
 					wg.Add(1)

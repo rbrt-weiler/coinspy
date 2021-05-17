@@ -22,6 +22,7 @@ type Cryptowatch struct {
 	client             *resty.Client
 	market             string
 	providerWithMarket string
+	Error              error
 }
 
 func uniqueStrings(input []string) (output []string) {
@@ -40,7 +41,7 @@ func uniqueStrings(input []string) (output []string) {
 
 func New() (p Cryptowatch) {
 	p.client = resty.New()
-	p.SetMarket("Kraken")
+	p.Error = p.SetMarket("Kraken")
 	return p
 }
 

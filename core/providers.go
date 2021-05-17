@@ -22,9 +22,7 @@ func ProviderList() (providers map[string][]string, err error) {
 		err = fmt.Errorf("could not fetch Cryptowatch markets: %s", err)
 		return
 	}
-	for _, market := range marketList {
-		providers[providerName] = append(providers[providerName], market)
-	}
+	providers[providerName] = append(providers[providerName], marketList...)
 
 	return
 }

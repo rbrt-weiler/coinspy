@@ -32,7 +32,7 @@ func New() (p CoinGate) {
 	p.client = resty.New()
 	p.market = "default"
 	p.providerWithMarket = ProviderName
-	p.FetchPrices()
+	p.Error = p.FetchPrices()
 	return
 }
 
