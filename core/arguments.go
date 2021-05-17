@@ -55,7 +55,7 @@ func SetupFlags() {
 		Cons.Fprintf(os.Stderr, "\n")
 		Cons.Fprintf(os.Stderr, "For coins and fiats, any well-known symbol (for example BTC for Bitcoin, EUR for Euro) can be used.\n")
 		Cons.Fprintf(os.Stderr, "\n")
-		Cons.Fprintf(os.Stderr, "Multiple providers, coins and fiats can be provided by using comma-seperated lists.\n")
+		Cons.Fprintf(os.Stderr, "Multiple providers, coins and fiats can be provided by using comma-separated lists.\n")
 		os.Exit(ErrUsage)
 	}
 	pflag.Parse()
