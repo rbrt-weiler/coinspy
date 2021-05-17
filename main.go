@@ -7,6 +7,8 @@ import (
 	"sync"
 	"time"
 
+	resty "github.com/go-resty/resty/v2"
+
 	"gitlab.com/rbrt-weiler/coinspy/core"
 	"gitlab.com/rbrt-weiler/coinspy/providers"
 	"gitlab.com/rbrt-weiler/coinspy/types"
@@ -33,14 +35,14 @@ func listProviders() {
 	os.Exit(core.ErrSuccess)
 }
 
-func initializeProvider(providerName string) (provider providers.Provider, err error) {
+func initializeProvider(providerName string, httpClient *resty.Client) (provider providers.Provider, err error) {
 	switch strings.ToLower(providerName) {
 	case "coingate":
-		provider = providers.CoinGate()
+		provider = providers.CoinGate(httpClient)
 	case "coingecko":
-		provider = providers.Coingecko()
+		provider = providers.Coingecko(httpClient)
 	case "cryptowatch":
-		provider = providers.Cryptowatch()
+		provider = providers.Cryptowatch(httpClient)
 	default:
 		err = fmt.Errorf("provider %s is unknown", providerName)
 	}
@@ -60,6 +62,8 @@ func fetchRates() (rates types.ExchangeRates) {
 
 	coins := strings.Split(config.Coins, ",")
 	fiats := strings.Split(config.Fiats, ",")
+	client := resty.New()
+	client.SetHeader("User-Agent", core.ToolID)
 
 	for _, singleProvider := range strings.Split(config.Providers, ",") {
 		if strings.Contains(singleProvider, "/") {
@@ -70,7 +74,7 @@ func fetchRates() (rates types.ExchangeRates) {
 			providerName = singleProvider
 			markets = []string{"default"}
 		}
-		provider, err = initializeProvider(providerName)
+		provider, err = initializeProvider(providerName, client)
 		if err != nil {
 			cons.Fprintf(os.Stderr, "Error: %s\n", err)
 			os.Exit(core.ErrGeneric)

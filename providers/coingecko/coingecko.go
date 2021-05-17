@@ -25,8 +25,8 @@ type Coingecko struct {
 	Error              error
 }
 
-func New() (p Coingecko) {
-	p.client = resty.New()
+func New(c *resty.Client) (p Coingecko) {
+	p.client = c
 	p.market = "default"
 	p.providerWithMarket = ProviderName
 	p.Error = p.PopulateCoinList()

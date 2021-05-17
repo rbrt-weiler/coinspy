@@ -39,8 +39,8 @@ func uniqueStrings(input []string) (output []string) {
 	return
 }
 
-func New() (p Cryptowatch) {
-	p.client = resty.New()
+func New(c *resty.Client) (p Cryptowatch) {
+	p.client = c
 	p.Error = p.SetMarket("Kraken")
 	return p
 }

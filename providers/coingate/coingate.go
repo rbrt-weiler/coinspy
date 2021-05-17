@@ -28,8 +28,8 @@ type CoinGate struct {
 	Error              error
 }
 
-func New() (p CoinGate) {
-	p.client = resty.New()
+func New(c *resty.Client) (p CoinGate) {
+	p.client = c
 	p.market = "default"
 	p.providerWithMarket = ProviderName
 	p.Error = p.FetchPrices()
