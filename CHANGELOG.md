@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
-(Nothing at this point.)
+### Fixed
+
+1. Error handling for Pushover now works.
 
 ## [1.0.0] - 2021-05-17
 

@@ -1,17 +1,23 @@
 package core
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	resty "github.com/go-resty/resty/v2"
+
+	"gitlab.com/rbrt-weiler/coinspy/types"
 )
 
 // SendPushoverMessage is used to send a Pushover notification.
 func SendPushoverMessage(token string, user string, message string, asOf time.Time) (err error) {
+	var poReply types.PushoverReply
+
 	client := resty.New()
-	_, pushErr := client.R().
+	resp, pushErr := client.R().
 		EnableTrace().
 		SetFormData(map[string]string{
 			"token":     token,
@@ -26,5 +32,15 @@ func SendPushoverMessage(token string, user string, message string, asOf time.Ti
 	if pushErr != nil {
 		err = fmt.Errorf("could not push message: %s", pushErr)
 	}
+
+	err = json.Unmarshal(resp.Body(), &poReply)
+	if err != nil {
+		err = fmt.Errorf("could no unmarshal API response: %s", err)
+		return
+	}
+	if poReply.Status != 1 {
+		err = fmt.Errorf("could not push message: %s", strings.Join(poReply.Errors, ": "))
+	}
+
 	return
 }
