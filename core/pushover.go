@@ -14,10 +14,11 @@ import (
 
 // SendPushoverMessage is used to send a Pushover notification.
 func SendPushoverMessage(token string, user string, message string, asOf time.Time) (err error) {
+	var resp *resty.Response
 	var poReply types.PushoverReply
 
 	client := resty.New()
-	resp, pushErr := client.R().
+	resp, err = client.R().
 		EnableTrace().
 		SetFormData(map[string]string{
 			"token":     token,
@@ -29,8 +30,9 @@ func SendPushoverMessage(token string, user string, message string, asOf time.Ti
 			"timestamp": strconv.FormatInt(asOf.Unix(), 10),
 		}).
 		Post("https://api.pushover.net/1/messages.json")
-	if pushErr != nil {
-		err = fmt.Errorf("could not push message: %s", pushErr)
+	if err != nil {
+		err = fmt.Errorf("could not push message: %s", err)
+		return
 	}
 
 	err = json.Unmarshal(resp.Body(), &poReply)
