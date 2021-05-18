@@ -18,6 +18,10 @@ const (
 
 	// EnvFileName contains the expected name for the env file.
 	EnvFileName string = ".coinspyenv"
+	// LineBreak defines the format of linebreaks in the Pushover message.
+	LineBreak string = "\r\n"
+	// PushoverMesssageLength defines the maximum length of a Pushover message.
+	PushoverMessageLength int = 1024
 
 	// ErrSuccess means no error.
 	ErrSuccess int = 0

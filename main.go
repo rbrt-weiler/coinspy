@@ -149,7 +149,7 @@ func main() {
 		}
 	}
 	if config.Pushover.Enabled {
-		poErr := core.SendPushoverMessage(config.Pushover.Token, config.Pushover.User, strings.Join(resultSet, "\r\n"), time.Now())
+		poErr := core.SendPushoverMessage(config.Pushover.Token, config.Pushover.User, strings.Join(resultSet, core.LineBreak), time.Now())
 		if poErr != nil {
 			cons.Fprintf(os.Stderr, "Error: %s\n", poErr)
 			os.Exit(core.ErrGeneric)
