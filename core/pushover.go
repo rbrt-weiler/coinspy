@@ -49,7 +49,6 @@ func SendPushoverMessage(token string, user string, message string, asOf time.Ti
 	client := resty.New()
 	for _, message = range messages {
 		resp, err = client.R().
-			EnableTrace().
 			SetFormData(map[string]string{
 				"token":     token,
 				"user":      user,
