@@ -8,12 +8,18 @@ type AppConfig struct {
 	Providers string
 	Coins     string
 	Fiats     string
-	Pushover  struct {
+	QuestDB   struct {
+		Host    string
+		Port    uint16
+		Enabled bool
+	}
+	Pushover struct {
 		Token   string
 		User    string
 		Enabled bool
 	}
 	Disable struct {
+		QuestDB  bool
 		Pushover bool
 	}
 	Quiet             bool

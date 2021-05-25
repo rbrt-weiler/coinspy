@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"net"
 	"os"
 	"path"
 
@@ -38,6 +39,9 @@ func SetupFlags() {
 	pflag.StringVarP(&Config.Providers, "providers", "P", envordef.StringVal("COINSPY_PROVIDERS", "Cryptowatch/Kraken"), "Exchange rate providers to use")
 	pflag.StringVarP(&Config.Coins, "coins", "C", envordef.StringVal("COINSPY_COINS", ""), "Coins to fetch rates for")
 	pflag.StringVarP(&Config.Fiats, "fiats", "F", envordef.StringVal("COINSPY_FIATS", ""), "Fiats to fetch rates for")
+	pflag.StringVar(&Config.QuestDB.Host, "questdb-host", envordef.StringVal("COINSPY_QUESTDB_HOST", ""), "Host running QuestDB")
+	pflag.Uint16Var(&Config.QuestDB.Port, "questdb-port", envordef.Uint16Val("COINSPY_QUESTDB_PORT", 0), "Port QuestDB Influx is listening on")
+	pflag.BoolVar(&Config.Disable.QuestDB, "disable-questdb", envordef.BoolVal("COINSPY_DISABLE_QUESTDB", false), "Disable QuestDB storage")
 	pflag.StringVar(&Config.Pushover.Token, "pushover-token", envordef.StringVal("COINSPY_PUSHOVER_TOKEN", ""), "Token for Pushover API access")
 	pflag.StringVar(&Config.Pushover.User, "pushover-user", envordef.StringVal("COINSPY_PUSHOVER_USER", ""), "User for Pushover API access")
 	pflag.BoolVar(&Config.Disable.Pushover, "disable-pushover", envordef.BoolVal("COINSPY_DISABLE_PUSHOVER", false), "Disable Pushover notifications")
@@ -72,6 +76,15 @@ func CheckArguments() {
 	if Config.Fiats == "" {
 		Cons.Fprintf(os.Stderr, "Error: No fiats provided.\n")
 		os.Exit(ErrGeneric)
+	}
+	if !Config.Disable.QuestDB {
+		qdbAddr := fmt.Sprintf("%s:%d", Config.QuestDB.Host, Config.QuestDB.Port)
+		_, qdbErr := net.ResolveTCPAddr("tcp", qdbAddr)
+		if qdbErr != nil {
+			Cons.Fprintf(os.Stderr, "Error: QuestDB host cannot be resolved.\n")
+			os.Exit(ErrGeneric)
+		}
+		Config.QuestDB.Enabled = true
 	}
 	if !Config.Disable.Pushover {
 		poTokenLen := len(Config.Pushover.Token)
