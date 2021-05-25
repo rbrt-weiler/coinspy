@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+### Added
+
+1. Support for storing results in a QuestDB instance.
+
 ### Fixed
 
 1. Error handling for Pushover now works.

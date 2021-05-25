@@ -148,6 +148,13 @@ func main() {
 			cons.Println(line)
 		}
 	}
+	if config.QuestDB.Enabled {
+		qdbErr := core.QDBStoreExchangeRates(&rates)
+		if qdbErr != nil {
+			cons.Fprintf(os.Stderr, "Error: %s\n", qdbErr)
+			os.Exit(core.ErrGeneric)
+		}
+	}
 	if config.Pushover.Enabled {
 		poErr := core.SendPushoverMessage(config.Pushover.Token, config.Pushover.User, strings.Join(resultSet, core.LineBreak), time.Now())
 		if poErr != nil {
