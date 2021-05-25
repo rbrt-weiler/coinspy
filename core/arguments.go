@@ -90,11 +90,11 @@ func CheckArguments() {
 		poTokenLen := len(Config.Pushover.Token)
 		poUserLen := len(Config.Pushover.User)
 		if poTokenLen > 0 || poUserLen > 0 {
-			Config.Pushover.Enabled = true
 			if poTokenLen == 0 || poUserLen == 0 {
 				Cons.Fprintf(os.Stderr, "Error: Pushover requires token and user.\n")
 				os.Exit(ErrGeneric)
 			}
+			Config.Pushover.Enabled = true
 		}
 	}
 }
