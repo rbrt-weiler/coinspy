@@ -40,7 +40,7 @@ func SetupFlags() {
 	pflag.StringVarP(&Config.Coins, "coins", "C", envordef.StringVal("COINSPY_COINS", ""), "Coins to fetch rates for")
 	pflag.StringVarP(&Config.Fiats, "fiats", "F", envordef.StringVal("COINSPY_FIATS", ""), "Fiats to fetch rates for")
 	pflag.StringVar(&Config.QuestDB.Host, "questdb-host", envordef.StringVal("COINSPY_QUESTDB_HOST", ""), "Host running QuestDB")
-	pflag.Uint16Var(&Config.QuestDB.Port, "questdb-port", envordef.Uint16Val("COINSPY_QUESTDB_PORT", 0), "Port QuestDB Influx is listening on")
+	pflag.Uint16Var(&Config.QuestDB.Port, "questdb-port", envordef.Uint16Val("COINSPY_QUESTDB_PORT", 9009), "Port QuestDB Influx is listening on")
 	pflag.BoolVar(&Config.Disable.QuestDB, "disable-questdb", envordef.BoolVal("COINSPY_DISABLE_QUESTDB", false), "Disable QuestDB storage")
 	pflag.StringVar(&Config.Pushover.Token, "pushover-token", envordef.StringVal("COINSPY_PUSHOVER_TOKEN", ""), "Token for Pushover API access")
 	pflag.StringVar(&Config.Pushover.User, "pushover-user", envordef.StringVal("COINSPY_PUSHOVER_USER", ""), "User for Pushover API access")
