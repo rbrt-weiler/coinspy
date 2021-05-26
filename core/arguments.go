@@ -78,13 +78,15 @@ func CheckArguments() {
 		os.Exit(ErrGeneric)
 	}
 	if !Config.Disable.QuestDB {
-		qdbAddr := fmt.Sprintf("%s:%d", Config.QuestDB.Host, Config.QuestDB.Port)
-		_, qdbErr := net.ResolveTCPAddr("tcp", qdbAddr)
-		if qdbErr != nil {
-			Cons.Fprintf(os.Stderr, "Error: QuestDB host cannot be resolved.\n")
-			os.Exit(ErrGeneric)
+		if len(Config.QuestDB.Host) > 0 {
+			qdbAddr := fmt.Sprintf("%s:%d", Config.QuestDB.Host, Config.QuestDB.Port)
+			_, qdbErr := net.ResolveTCPAddr("tcp", qdbAddr)
+			if qdbErr != nil {
+				Cons.Fprintf(os.Stderr, "Error: QuestDB host cannot be resolved.\n")
+				os.Exit(ErrGeneric)
+			}
+			Config.QuestDB.Enabled = true
 		}
-		Config.QuestDB.Enabled = true
 	}
 	if !Config.Disable.Pushover {
 		poTokenLen := len(Config.Pushover.Token)
