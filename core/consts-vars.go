@@ -10,7 +10,7 @@ const (
 	// ToolName contains the name of the application.
 	ToolName string = "Coinspy"
 	// ToolVersion contains the version number of the application.
-	ToolVersion string = "1.0.0"
+	ToolVersion string = "1.1.0"
 	// ToolID contains a user-agent-style representation of ToolName/ToolVersion.
 	ToolID string = ToolName + "/" + ToolVersion
 	// ToolURL contains the URL where the application can be found.
@@ -20,7 +20,7 @@ const (
 	EnvFileName string = ".coinspyenv"
 	// LineBreak defines the format of linebreaks in the Pushover message.
 	LineBreak string = "\r\n"
-	// PushoverMesssageLength defines the maximum length of a Pushover message.
+	// PushoverMessageLength defines the maximum length of a Pushover message.
 	PushoverMessageLength int = 1024
 
 	// ErrSuccess means no error.
