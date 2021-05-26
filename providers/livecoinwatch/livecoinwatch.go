@@ -80,8 +80,6 @@ func (p *LiveCoinWatch) FetchRate(coin string, fiat string) (rate types.Exchange
 		return
 	}
 
-	fmt.Printf("DEBUG: %d\n", price.Error.Code)
-
 	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: price.Rate, Error: err}, err
 }
 
