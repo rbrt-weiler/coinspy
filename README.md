@@ -5,7 +5,7 @@
 [![build:master](https://img.shields.io/gitlab/pipeline/rbrt-weiler/coinspy/master?label=build%3Amaster)](https://gitlab.com/rbrt-weiler/coinspy/tree/master)
 [![pkg.go.dev](https://pkg.go.dev/badge/gitlab.com/rbrt-weiler/coinspy.svg)](https://pkg.go.dev/gitlab.com/rbrt-weiler/coinspy)
 
-Coinspy aids crypto-currency investors by fetching exchange rates and pushing them to devices via Pushover. For fetching exchange rates, multiple providers and markets are supported.
+Coinspy aids crypto-currency investors by fetching exchange rates and pushing them to devices via Pushover. For fetching exchange rates, multiple providers and markets are supported. Fetched data can also be written to a QuestDB instance, aiding in building a personal, historic repository of exchange rates.
 
 ## Usage
 
@@ -15,16 +15,20 @@ Coinspy aids crypto-currency investors by fetching exchange rates and pushing th
 Usage: coinspy [options]
 
 Available options:
-  -C, --coins string            Coins to fetch rates for
-      --disable-pushover        Disable Pushover notifications
-  -F, --fiats string            Fiats to fetch rates for
-      --list-providers          List possible providers
-      --output-compact          Use compact output format
-      --output-very-compact     Use very compact output format
-  -P, --providers string        Exchange rate providers to use (default "Cryptowatch/Kraken")
-      --pushover-token string   Token for Pushover API access
-      --pushover-user string    User for Pushover API access
-  -q, --quiet                   Do not print to stdout
+  -C, --coins string                  Coins to fetch rates for
+      --disable-pushover              Disable Pushover notifications
+      --disable-questdb               Disable QuestDB storage
+  -F, --fiats string                  Fiats to fetch rates for
+      --list-providers                List possible providers
+      --livecoinwatch-apikey string   API key for accessing the LiveCoinWatch API
+      --output-compact                Use compact output format
+      --output-very-compact           Use very compact output format
+  -P, --providers string              Exchange rate providers to use (default "Cryptowatch/Kraken")
+      --pushover-token string         Token for Pushover API access
+      --pushover-user string          User for Pushover API access
+      --questdb-host string           Host running QuestDB
+      --questdb-port uint16           Port QuestDB Influx is listening on (default 9009)
+  -q, --quiet                         Do not print to stdout
 
 For coins and fiats, any well-known symbol (for example BTC for Bitcoin, EUR for Euro) can be used.
 
@@ -63,7 +67,11 @@ The major providers supported by Coinspy are:
 * Coingecko
 * Cryptowatch with all available markets
 
-All providers use free API endpoints, so no credentials are required to fetch exchange rates. Please call `coinspy --list-providers` to obtain a full list of all supported provider/market combinations.
+All providers listed above use free API endpoints, so no credentials are required to fetch exchange rates. In addition, the following providers, which require authentication, are supported:
+
+* LiveCoinWatch (requires _--livecoinwatch-*_)
+
+Please call `coinspy --list-providers` to obtain a full list of all supported provider/market combinations.
 
 ## Configuration
 
@@ -76,6 +84,10 @@ On startup, Coinspy will search the environment file in the current directory or
 | COINSPY_PROVIDERS | -P, --providers |
 | COINSPY_COINS | -C, --coins |
 | COINSPY_FIATS | -F, --fiats |
+| COINSPY_LIVECOINWATCH_APIKEY | --livecoinwatch-apikey |
+| COINSPY_QUESTDB_HOST | --questdb-host |
+| COINSPY_QUESTDB_PORT | --questdb-port |
+| COINSPY_DISABLE_QUESTDB | --disable-questdb |
 | COINSPY_PUSHOVER_USER | --pushover-user |
 | COINSPY_PUSHOVER_TOKEN | --pushover-token |
 | COINSPY_DISABLE_PUSHOVER | --disable-pushover |
@@ -84,6 +96,10 @@ On startup, Coinspy will search the environment file in the current directory or
 | COINSPY_OUTPUT_VERY_COMPACT | --output-very-compact |
 
 Environment variables can also be passed by actually creating environment variables, for example by calling Coinspy like `COINSPY_PROVIDERS="Coingecko" COINSPY_COINS="BTC" COINSPY_FIATS="EUR" coinspy`.
+
+## Storing Exchange Rates in a QuestDB Instance
+
+Every time exchange rates are fetched by Coinspy they can also be stored in a [QuestDB](https://questdb.io/) instance. In order to do so, provide the host running QuestDB via _--questdb-host_ and, if necessary, the port exposed by QuestDB via _--questdb-port_. Please note that only the InfluxDB line protocol is supported for writing to QuestDB as of now.
 
 ## Pushover Configuration
 
