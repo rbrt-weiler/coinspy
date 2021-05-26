@@ -39,6 +39,7 @@ func SetupFlags() {
 	pflag.StringVarP(&Config.Providers, "providers", "P", envordef.StringVal("COINSPY_PROVIDERS", "Cryptowatch/Kraken"), "Exchange rate providers to use")
 	pflag.StringVarP(&Config.Coins, "coins", "C", envordef.StringVal("COINSPY_COINS", ""), "Coins to fetch rates for")
 	pflag.StringVarP(&Config.Fiats, "fiats", "F", envordef.StringVal("COINSPY_FIATS", ""), "Fiats to fetch rates for")
+	pflag.StringVar(&Config.LiveCoinWatch.APIKey, "livecoinwatch-apikey", envordef.StringVal("COINSPY_LIVECOINWATCH_APIKEY", ""), "API key for accessing the LiveCoinWatch API")
 	pflag.StringVar(&Config.QuestDB.Host, "questdb-host", envordef.StringVal("COINSPY_QUESTDB_HOST", ""), "Host running QuestDB")
 	pflag.Uint16Var(&Config.QuestDB.Port, "questdb-port", envordef.Uint16Val("COINSPY_QUESTDB_PORT", 9009), "Port QuestDB Influx is listening on")
 	pflag.BoolVar(&Config.Disable.QuestDB, "disable-questdb", envordef.BoolVal("COINSPY_DISABLE_QUESTDB", false), "Disable QuestDB storage")

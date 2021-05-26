@@ -45,6 +45,8 @@ func initializeProvider(providerName string, httpClient *resty.Client) (provider
 		provider = providers.Coingecko(httpClient)
 	case "cryptowatch":
 		provider = providers.Cryptowatch(httpClient)
+	case "livecoinwatch":
+		provider = providers.LiveCoinWatch(httpClient)
 	default:
 		err = fmt.Errorf("provider %s is unknown", providerName)
 	}

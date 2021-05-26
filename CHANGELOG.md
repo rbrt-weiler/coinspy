@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ### Added
 
 1. Support for storing results in a QuestDB instance.
+1. New provider LiveCoinWatch.
 
 ### Fixed
 

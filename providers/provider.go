@@ -7,6 +7,7 @@ import (
 	"gitlab.com/rbrt-weiler/coinspy/providers/coingate"
 	"gitlab.com/rbrt-weiler/coinspy/providers/coingecko"
 	"gitlab.com/rbrt-weiler/coinspy/providers/cryptowatch"
+	"gitlab.com/rbrt-weiler/coinspy/providers/livecoinwatch"
 	"gitlab.com/rbrt-weiler/coinspy/types"
 )
 
@@ -32,5 +33,11 @@ func Coingecko(c *resty.Client) (p *coingecko.Coingecko) {
 // Cryptowatch returns an initialized provider implementation.
 func Cryptowatch(c *resty.Client) (p *cryptowatch.Cryptowatch) {
 	provider := cryptowatch.New(c)
+	return &provider
+}
+
+// LiveCoinWatch returns an initialized provider implementation.
+func LiveCoinWatch(c *resty.Client) (p *livecoinwatch.LiveCoinWatch) {
+	provider := livecoinwatch.New(c)
 	return &provider
 }

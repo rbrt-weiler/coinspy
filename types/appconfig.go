@@ -5,10 +5,13 @@ type AppConfig struct {
 	List struct {
 		Providers bool
 	}
-	Providers string
-	Coins     string
-	Fiats     string
-	QuestDB   struct {
+	Providers     string
+	Coins         string
+	Fiats         string
+	LiveCoinWatch struct {
+		APIKey string
+	}
+	QuestDB struct {
 		Host    string
 		Port    uint16
 		Enabled bool
