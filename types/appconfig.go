@@ -25,7 +25,9 @@ type AppConfig struct {
 		QuestDB  bool
 		Pushover bool
 	}
-	Quiet             bool
-	CompactOutput     bool
-	VeryCompactOutput bool
+	Quiet                bool
+	CompactOutput        bool
+	VeryCompactOutput    bool
+	PortfolioValueTop    bool
+	PortfolioValueBottom bool
 }

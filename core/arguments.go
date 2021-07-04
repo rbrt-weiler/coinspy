@@ -49,6 +49,8 @@ func SetupFlags() {
 	pflag.BoolVarP(&Config.Quiet, "quiet", "q", envordef.BoolVal("COINSPY_QUIET", false), "Do not print to stdout")
 	pflag.BoolVar(&Config.CompactOutput, "output-compact", envordef.BoolVal("COINSPY_OUTPUT_COMPACT", false), "Use compact output format")
 	pflag.BoolVar(&Config.VeryCompactOutput, "output-very-compact", envordef.BoolVal("COINSPY_OUTPUT_VERY_COMPACT", false), "Use very compact output format")
+	pflag.BoolVar(&Config.PortfolioValueTop, "portfolio-value-top", envordef.BoolVal("COINSPY_PORTFOLIO_VALUE_TOP", false), "Show total portfolio value at top of output")
+	pflag.BoolVar(&Config.PortfolioValueBottom, "portfolio-value-bottom", envordef.BoolVal("COINSPY_PORTFOLIO_VALUE_BOTTOM", false), "Show total portfolio value at bottom of output")
 	pflag.Usage = func() {
 		Cons.Fprintf(os.Stderr, "%s\n", ToolID)
 		Cons.Fprintf(os.Stderr, "%s\n", ToolURL)
