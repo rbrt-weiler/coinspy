@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 (Currently nothing to note.)
 
+## [1.2.0] - 2021-07-04
+
+### Added
+
+1. Support for calculating and displaying the total portfolio value.
+
 ## [1.1.0] - 2021-05-26
 
 ### Added
@@ -49,6 +55,7 @@ Initial public release.
 1. Support for multiple markets as supported by Cryptowatch.
 
 [Unreleased]: https://gitlab.com/rbrt-weiler/coinspy/-/compare/1.1.0...master
+[1.2.0]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/1.2.0
 [1.1.0]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/1.1.0
 [1.0.0]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/1.0.0
 [0.2.0]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/0.2.0
