@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -85,11 +86,23 @@ func (p *Coingecko) SetMarket(market string) (err error) {
 
 // FetchRate returns a single ExchangeRate.
 func (p *Coingecko) FetchRate(coin string, fiat string) (rate types.ExchangeRate, err error) {
+	var coinParts []string
+	var owned float64
 	var coinID string
 	var resp *resty.Response
 	var priceList Prices
 
 	apiURL := fmt.Sprintf("%s/simple/price", APIBaseURL)
+	coinParts = strings.Split(coin, "=")
+	coin = coinParts[0]
+	owned = -1
+	if len(coinParts) == 2 {
+		owned, err = strconv.ParseFloat(coinParts[1], 64)
+		if err != nil {
+			err = fmt.Errorf("could not parse owned coins for %s/%s: %s", coin, fiat, err)
+			return
+		}
+	}
 
 	coinID, err = p.SymbolToID(coin)
 	if err != nil {
@@ -113,7 +126,7 @@ func (p *Coingecko) FetchRate(coin string, fiat string) (rate types.ExchangeRate
 		return
 	}
 
-	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: priceList[coinID][fiatID], Error: err}, err
+	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: resp.ReceivedAt(), Coin: coin, Owned: owned, Fiat: fiat, Rate: priceList[coinID][fiatID], Error: err}, err
 }
 
 // FetchRateSynced is a multi-threading implementation of FetchRate.
