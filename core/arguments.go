@@ -63,7 +63,7 @@ func SetupFlags() {
 		pflag.PrintDefaults()
 		Cons.Fprintf(os.Stderr, "\n")
 		Cons.Fprintf(os.Stderr, "For coins and fiats, any well-known symbol (for example BTC for Bitcoin, EUR for Euro) can be used.\n")
-		Cons.Fprintf(os.Stderr, "\n")
+		Cons.Fprintf(os.Stderr, "The amount of owned coins can be set by adding =VALUE to the coin, e.g. BTC=1.234.\n")
 		Cons.Fprintf(os.Stderr, "Multiple providers, coins and fiats can be provided by using comma-separated lists.\n")
 		os.Exit(ErrUsage)
 	}
