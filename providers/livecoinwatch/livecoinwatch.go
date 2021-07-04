@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -43,12 +44,24 @@ func (p *LiveCoinWatch) SetMarket(market string) (err error) {
 
 // FetchRate returns a single ExchangeRate.
 func (p *LiveCoinWatch) FetchRate(coin string, fiat string) (rate types.ExchangeRate, err error) {
+	var coinParts []string
+	var owned float64
 	var resp *resty.Response
 	var query PriceQuery
 	var queryJSON []byte
 	var price PriceResult
 
 	apiURL := fmt.Sprintf("%s/coins/single", APIBaseURL)
+	coinParts = strings.Split(coin, "=")
+	coin = coinParts[0]
+	owned = -1
+	if len(coinParts) == 2 {
+		owned, err = strconv.ParseFloat(coinParts[1], 64)
+		if err != nil {
+			err = fmt.Errorf("could not parse owned coins for %s/%s: %s", coin, fiat, err)
+			return
+		}
+	}
 
 	query.Code = strings.ToUpper(coin)
 	query.Currency = strings.ToUpper(fiat)
@@ -80,7 +93,7 @@ func (p *LiveCoinWatch) FetchRate(coin string, fiat string) (rate types.Exchange
 		return
 	}
 
-	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: price.Rate, Error: err}, err
+	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: resp.ReceivedAt(), Coin: coin, Owned: owned, Fiat: fiat, Rate: price.Rate, Error: err}, err
 }
 
 // FetchRateSynced is a multi-threading implementation of FetchRate.
