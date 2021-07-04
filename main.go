@@ -105,9 +105,22 @@ func fetchRates() (rates types.ExchangeRates) {
 
 // ratesToStrings turns the exchange rates into a list of strings, with compactness as defined by CLI arguments.
 func ratesToStrings(rates *types.ExchangeRates) (resultSet []string) {
+	var portfolioValue map[string]float64
+
 	config := &core.Config
+	portfolioValue = make(map[string]float64)
 
 	rates.Sort()
+	for _, rate := range rates.Rates {
+		if rate.Owned > 0 {
+			portfolioValue[strings.ToUpper(rate.Fiat)] += rate.Owned * rate.Rate
+		}
+	}
+	if config.PortfolioValueTop {
+		for fiat, value := range portfolioValue {
+			resultSet = append(resultSet, fmt.Sprintf("Total portfolio value: %.2f %s", value, fiat))
+		}
+	}
 	for _, rate := range rates.Rates {
 		if rate.Error == nil {
 			if config.VeryCompactOutput {
@@ -117,6 +130,11 @@ func ratesToStrings(rates *types.ExchangeRates) (resultSet []string) {
 			} else {
 				resultSet = append(resultSet, rate.String())
 			}
+		}
+	}
+	if config.PortfolioValueBottom {
+		for fiat, value := range portfolioValue {
+			resultSet = append(resultSet, fmt.Sprintf("Total portfolio value: %.2f %s", value, fiat))
 		}
 	}
 
