@@ -23,6 +23,8 @@ Available options:
       --livecoinwatch-apikey string   API key for accessing the LiveCoinWatch API
       --output-compact                Use compact output format
       --output-very-compact           Use very compact output format
+      --portfolio-value-bottom        Show total portfolio value at bottom of output
+      --portfolio-value-top           Show total portfolio value at top of output
   -P, --providers string              Exchange rate providers to use (default "Cryptowatch/Kraken")
       --pushover-token string         Token for Pushover API access
       --pushover-user string          User for Pushover API access
@@ -31,11 +33,13 @@ Available options:
   -q, --quiet                         Do not print to stdout
 
 For coins and fiats, any well-known symbol (for example BTC for Bitcoin, EUR for Euro) can be used.
-
+The amount of owned coins can be set by adding =VALUE to the coin, e.g. BTC=1.234.
 Multiple providers, coins and fiats can be provided by using comma-separated lists.
 ```
 
-### Example
+### Examples
+
+Fetch rates only:
 
 ```shell
 $ coinspy -P Coingecko,Cryptowatch/Binance -C LTC,BTC,ETH -F USD,EUR,AUD
@@ -57,6 +61,33 @@ Error: Market not found (BTC/USD on Cryptowatch/Binance; 9.701000 allowance rema
 1 LTC = 237.770000 EUR (on Coingecko as of 2021-05-17T11:07:33+02:00)
 1 LTC = 236.890000 EUR (on Cryptowatch/Binance as of 2021-05-17T11:07:33+02:00)
 1 LTC = 288.840000 USD (on Coingecko as of 2021-05-17T11:07:33+02:00)
+```
+
+Fetch rates and calculate total portfolio value:
+
+```shell
+$ coinspy -P Coingecko,Cryptowatch/Binance -C LTC=0.654,BTC=1.2345,ETH=3.21 -F EUR,USD,AUD --portfolio-value-top
+Error: Market not found (LTC/AUD on Cryptowatch/Binance; 9.985000 allowance remaining)
+Error: Market not found (BTC/USD on Cryptowatch/Binance; 9.965000 allowance remaining)
+Error: Market not found (LTC/USD on Cryptowatch/Binance; 9.975000 allowance remaining)
+Error: Market not found (ETH/USD on Cryptowatch/Binance; 9.945000 allowance remaining)
+Total portfolio value: 136452.82 AUD
+Total portfolio value: 86551.81 EUR
+Total portfolio value: 51409.13 USD
+1.234500 BTC = 58222.723500 AUD (on Coingecko as of 2021-07-04T14:26:18+02:00)
+1.234500 BTC = 58267.424745 AUD (on Cryptowatch/Binance as of 2021-07-04T14:26:18+02:00)
+1.234500 BTC = 36952.288500 EUR (on Coingecko as of 2021-07-04T14:26:18+02:00)
+1.234500 BTC = 36863.737815 EUR (on Cryptowatch/Binance as of 2021-07-04T14:26:18+02:00)
+1.234500 BTC = 43844.502000 USD (on Coingecko as of 2021-07-04T14:26:18+02:00)
+3.210000 ETH = 9920.761800 AUD (on Coingecko as of 2021-07-04T14:26:18+02:00)
+3.210000 ETH = 9917.006100 AUD (on Cryptowatch/Binance as of 2021-07-04T14:26:18+02:00)
+3.210000 ETH = 6297.281700 EUR (on Coingecko as of 2021-07-04T14:26:18+02:00)
+3.210000 ETH = 6280.172400 EUR (on Cryptowatch/Binance as of 2021-07-04T14:26:18+02:00)
+3.210000 ETH = 7470.761400 USD (on Coingecko as of 2021-07-04T14:26:18+02:00)
+0.654000 LTC = 124.907460 AUD (on Coingecko as of 2021-07-04T14:26:18+02:00)
+0.654000 LTC = 79.277880 EUR (on Coingecko as of 2021-07-04T14:26:18+02:00)
+0.654000 LTC = 79.048980 EUR (on Cryptowatch/Binance as of 2021-07-04T14:26:18+02:00)
+0.654000 LTC = 93.862080 USD (on Coingecko as of 2021-07-04T14:26:18+02:00)
 ```
 
 ## Supported Providers and Markets
@@ -94,6 +125,8 @@ On startup, Coinspy will search the environment file in the current directory or
 | COINSPY_QUIET | -q, --quiet |
 | COINSPY_OUTPUT_COMPACT | --output-compact |
 | COINSPY_OUTPUT_VERY_COMPACT | --output-very-compact |
+| COINSPY_PORTFOLIO_VALUE_TOP | --portfolio-value-top |
+| COINSPY_PORTFOLIO_VALUE_BOTTOM | --portfolio-value-bottom |
 
 Environment variables can also be passed by actually creating environment variables, for example by calling Coinspy like `COINSPY_PROVIDERS="Coingecko" COINSPY_COINS="BTC" COINSPY_FIATS="EUR" coinspy`.
 
