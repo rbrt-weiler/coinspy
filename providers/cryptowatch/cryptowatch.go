@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -91,11 +92,24 @@ func (p *Cryptowatch) SetMarket(market string) (err error) {
 // FetchRate returns a single ExchangeRate.
 func (p *Cryptowatch) FetchRate(coin string, fiat string) (rate types.ExchangeRate, err error) {
 	var apiURL string
+	var coinParts []string
+	var owned float64
 	var resp *resty.Response
 	var apiResult Result
 	var rateValue float64
 
 	rateValue = 0
+	coinParts = strings.Split(coin, "=")
+	coin = coinParts[0]
+	owned = -1
+	if len(coinParts) == 2 {
+		owned, err = strconv.ParseFloat(coinParts[1], 64)
+		if err != nil {
+			err = fmt.Errorf("could not parse owned coins for %s/%s: %s", coin, fiat, err)
+			return
+		}
+	}
+
 	apiURL = fmt.Sprintf("https://api.cryptowat.ch/markets/%s/%s%s/price", strings.ToLower(p.market), strings.ToLower(coin), strings.ToLower(fiat))
 	resp, err = p.client.R().Get(apiURL)
 	if err != nil {
@@ -113,7 +127,7 @@ func (p *Cryptowatch) FetchRate(coin string, fiat string) (rate types.ExchangeRa
 		}
 	}
 
-	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: resp.ReceivedAt(), Coin: coin, Fiat: fiat, Rate: rateValue, Error: err}, err
+	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: resp.ReceivedAt(), Coin: coin, Owned: owned, Fiat: fiat, Rate: rateValue, Error: err}, err
 }
 
 // FetchRateSynced is a multi-threading implementation of FetchRate.
