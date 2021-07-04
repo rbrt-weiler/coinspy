@@ -72,6 +72,8 @@ func (p *CoinGate) SetMarket(market string) (err error) {
 
 // FetchRate returns a single ExchangeRate.
 func (p *CoinGate) FetchRate(coin string, fiat string) (rate types.ExchangeRate, err error) {
+	var coinParts []string
+	var owned float64
 	var rateString string
 	var ok bool
 	var rateFloat float64
@@ -80,6 +82,17 @@ func (p *CoinGate) FetchRate(coin string, fiat string) (rate types.ExchangeRate,
 		err = p.FetchPrices()
 		if err != nil {
 			err = fmt.Errorf("prices could not be initialized: %s", err)
+			return
+		}
+	}
+
+	coinParts = strings.Split(coin, "=")
+	coin = coinParts[0]
+	owned = -1
+	if len(coinParts) == 2 {
+		owned, err = strconv.ParseFloat(coinParts[1], 64)
+		if err != nil {
+			err = fmt.Errorf("could not parse owned coins for %s/%s: %s", coin, fiat, err)
 			return
 		}
 	}
@@ -96,7 +109,7 @@ func (p *CoinGate) FetchRate(coin string, fiat string) (rate types.ExchangeRate,
 		return
 	}
 
-	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: p.pricesAsOf, Coin: coin, Fiat: fiat, Rate: rateFloat, Error: err}, err
+	return types.ExchangeRate{Provider: ProviderName, Market: p.market, ProviderWithMarket: p.providerWithMarket, AsOf: p.pricesAsOf, Coin: coin, Owned: owned, Fiat: fiat, Rate: rateFloat, Error: err}, err
 }
 
 // FetchRateSynced is a multi-threading implementation of FetchRate.
