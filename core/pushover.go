@@ -63,11 +63,17 @@ func SanitizeMessage(message string) (messageParts []string, err error) {
 
 // SendPushoverMessage is used to send a Pushover notification.
 func SendPushoverMessage(token string, user string, message string, asOf time.Time) (err error) {
+	var htmlParam string
 	var messages []string
 	var resp *resty.Response
 	var poReply types.PushoverReply
 
-	messages, err = SanitizeMessage(HTMLizeMessage(message))
+	htmlParam = "0"
+	if Config.Pushover.IncludeLinks {
+		message = HTMLizeMessage(message)
+		htmlParam = "1"
+	}
+	messages, err = SanitizeMessage(message)
 	if err != nil {
 		err = fmt.Errorf("could not sanitize Pushover message: %s", err)
 		return
@@ -80,7 +86,7 @@ func SendPushoverMessage(token string, user string, message string, asOf time.Ti
 				"token":     token,
 				"user":      user,
 				"message":   message,
-				"html":      "1",
+				"html":      htmlParam,
 				"title":     "Coinspy",
 				"sound":     "cashregister",
 				"url":       ToolURL,

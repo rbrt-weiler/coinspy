@@ -45,6 +45,7 @@ func SetupFlags() {
 	pflag.BoolVar(&Config.Disable.QuestDB, "disable-questdb", envordef.BoolVal("COINSPY_DISABLE_QUESTDB", false), "Disable QuestDB storage")
 	pflag.StringVar(&Config.Pushover.Token, "pushover-token", envordef.StringVal("COINSPY_PUSHOVER_TOKEN", ""), "Token for Pushover API access")
 	pflag.StringVar(&Config.Pushover.User, "pushover-user", envordef.StringVal("COINSPY_PUSHOVER_USER", ""), "User for Pushover API access")
+	pflag.BoolVar(&Config.Pushover.IncludeLinks, "pushover-include-links", envordef.BoolVal("COINSPY_PUSHOVER_INCLUDE_LINKS", false), "Include links to charts in Pushover notifications")
 	pflag.BoolVar(&Config.Disable.Pushover, "disable-pushover", envordef.BoolVal("COINSPY_DISABLE_PUSHOVER", false), "Disable Pushover notifications")
 	pflag.BoolVarP(&Config.Quiet, "quiet", "q", envordef.BoolVal("COINSPY_QUIET", false), "Do not print to stdout")
 	pflag.BoolVar(&Config.CompactOutput, "output-compact", envordef.BoolVal("COINSPY_OUTPUT_COMPACT", false), "Use compact output format")

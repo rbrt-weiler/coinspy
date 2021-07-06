@@ -17,9 +17,10 @@ type AppConfig struct {
 		Enabled bool
 	}
 	Pushover struct {
-		Token   string
-		User    string
-		Enabled bool
+		Token        string
+		User         string
+		IncludeLinks bool
+		Enabled      bool
 	}
 	Disable struct {
 		QuestDB  bool
