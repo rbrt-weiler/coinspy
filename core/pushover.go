@@ -56,6 +56,7 @@ func SendPushoverMessage(token string, user string, message string, asOf time.Ti
 				"title":     "Coinspy",
 				"sound":     "cashregister",
 				"url":       ToolURL,
+				"url_title": fmt.Sprintf("sent by %s v%s", ToolName, ToolVersion),
 				"timestamp": strconv.FormatInt(asOf.Unix(), 10),
 			}).
 			Post("https://api.pushover.net/1/messages.json")
