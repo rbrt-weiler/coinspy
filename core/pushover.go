@@ -3,6 +3,7 @@ package core
 import (
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -11,6 +12,32 @@ import (
 
 	"gitlab.com/rbrt-weiler/coinspy/types"
 )
+
+// HTMLizeMessage adds HTML links to Yahoo finance charts to each line.
+func HTMLizeMessage(message string) (htmlMessage string) {
+	var urlTemplate string
+	var lineTemplate string
+	var currencyParser *regexp.Regexp
+	var currencyParts []string
+	var coin string
+	var fiat string
+	var url string
+
+	urlTemplate = `https://finance.yahoo.com/quote/%s-%s/chart/`
+	lineTemplate = `%s <a href="%s">&#x1f4c8</a>`
+	currencyParser = regexp.MustCompile(`(\w+)\s*=\s*(\d+.\d+|\d+)\s*(\w+)`)
+
+	for _, line := range strings.Split(message, LineBreak) {
+		currencyParts = currencyParser.FindStringSubmatch(line)
+		coin = currencyParts[1]
+		fiat = currencyParts[3]
+		url = fmt.Sprintf(urlTemplate, coin, fiat)
+		line = fmt.Sprintf(lineTemplate, line, url)
+		htmlMessage = strings.Join([]string{htmlMessage, line}, LineBreak)
+	}
+
+	return
+}
 
 // SanitizeMessage checks the length of a message and returns an array of strings, each containing a part that will go through Pushover without being cut off.
 func SanitizeMessage(message string) (messageParts []string, err error) {
@@ -40,7 +67,7 @@ func SendPushoverMessage(token string, user string, message string, asOf time.Ti
 	var resp *resty.Response
 	var poReply types.PushoverReply
 
-	messages, err = SanitizeMessage(message)
+	messages, err = SanitizeMessage(HTMLizeMessage(message))
 	if err != nil {
 		err = fmt.Errorf("could not sanitize Pushover message: %s", err)
 		return
@@ -53,6 +80,7 @@ func SendPushoverMessage(token string, user string, message string, asOf time.Ti
 				"token":     token,
 				"user":      user,
 				"message":   message,
+				"html":      "1",
 				"title":     "Coinspy",
 				"sound":     "cashregister",
 				"url":       ToolURL,
