@@ -26,6 +26,7 @@ Available options:
       --portfolio-value-bottom        Show total portfolio value at bottom of output
       --portfolio-value-top           Show total portfolio value at top of output
   -P, --providers string              Exchange rate providers to use (default "Cryptowatch/Kraken")
+      --pushover-include-links        Include links to charts in Pushover notifications
       --pushover-token string         Token for Pushover API access
       --pushover-user string          User for Pushover API access
       --questdb-host string           Host running QuestDB
@@ -121,6 +122,7 @@ On startup, Coinspy will search the environment file in the current directory or
 | COINSPY_DISABLE_QUESTDB | --disable-questdb |
 | COINSPY_PUSHOVER_USER | --pushover-user |
 | COINSPY_PUSHOVER_TOKEN | --pushover-token |
+| COINSPY_PUSHOVER_INCLUDE_LINKS | --pushover-include-links |
 | COINSPY_DISABLE_PUSHOVER | --disable-pushover |
 | COINSPY_QUIET | -q, --quiet |
 | COINSPY_OUTPUT_COMPACT | --output-compact |
