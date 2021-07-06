@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 (Currently nothing to note.)
 
+## [1.2.2] - 2021-07-06
+
+### Added
+
+1. Option to include links to charts in Pushover notifications with `--pushover-include-links`.
+
 ## [1.2.1] - 2021-07-06
 
 ### Changed
@@ -61,6 +67,8 @@ Initial public release.
 1. Support for multiple markets as supported by Cryptowatch.
 
 [Unreleased]: https://gitlab.com/rbrt-weiler/coinspy/-/compare/1.1.0...master
+[1.2.2]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/1.2.2
+[1.2.1]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/1.2.1
 [1.2.0]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/1.2.0
 [1.1.0]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/1.1.0
 [1.0.0]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/1.0.0
