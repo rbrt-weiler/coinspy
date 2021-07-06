@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 (Currently nothing to note.)
 
+## [1.2.1] - 2021-07-06
+
+### Changed
+
+1. Set URL title for Pushover messages.
+
 ## [1.2.0] - 2021-07-04
 
 ### Added
