@@ -1,3 +1,3 @@
-FROM golang:1.16
+FROM golang:1.22
 
 CMD [ "/bin/bash" ]
