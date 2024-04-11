@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 (Currently nothing to note.)
 
+## [1.2.3] - 2024-04-11
+
+### Removed
+
+1. Support for Cryptowatch, as the API was shut down in 2023.
+
 ## [1.2.2] - 2021-07-06
 
 ### Added
@@ -66,7 +72,8 @@ Initial public release.
 1. Fetch exchange rates for an arbitary number of coins and fiats from Cryptowatch.
 1. Support for multiple markets as supported by Cryptowatch.
 
-[Unreleased]: https://gitlab.com/rbrt-weiler/coinspy/-/compare/1.1.0...master
+[Unreleased]: https://gitlab.com/rbrt-weiler/coinspy/-/compare/1.2.3...master
+[1.2.3]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/1.2.3
 [1.2.2]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/1.2.2
 [1.2.1]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/1.2.1
 [1.2.0]: https://gitlab.com/rbrt-weiler/coinspy/-/tree/1.2.0
