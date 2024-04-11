@@ -43,8 +43,6 @@ func initializeProvider(providerName string, httpClient *resty.Client) (provider
 		provider = providers.CoinGate(httpClient)
 	case "coingecko":
 		provider = providers.Coingecko(httpClient)
-	case "cryptowatch":
-		provider = providers.Cryptowatch(httpClient)
 	case "livecoinwatch":
 		provider = providers.LiveCoinWatch(httpClient)
 	default:

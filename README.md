@@ -25,7 +25,7 @@ Available options:
       --output-very-compact           Use very compact output format
       --portfolio-value-bottom        Show total portfolio value at bottom of output
       --portfolio-value-top           Show total portfolio value at top of output
-  -P, --providers string              Exchange rate providers to use (default "Cryptowatch/Kraken")
+  -P, --providers string              Exchange rate providers to use (default "CoinGate")
       --pushover-include-links        Include links to charts in Pushover notifications
       --pushover-token string         Token for Pushover API access
       --pushover-user string          User for Pushover API access
@@ -43,52 +43,34 @@ Multiple providers, coins and fiats can be provided by using comma-separated lis
 Fetch rates only:
 
 ```shell
-$ coinspy -P Coingecko,Cryptowatch/Binance -C LTC,BTC,ETH -F USD,EUR,AUD
-Error: Market not found (LTC/AUD on Cryptowatch/Binance; 9.716000 allowance remaining)
-Error: Market not found (ETH/USD on Cryptowatch/Binance; 9.726000 allowance remaining)
-Error: Market not found (LTC/USD on Cryptowatch/Binance; 9.731000 allowance remaining)
-Error: Market not found (BTC/USD on Cryptowatch/Binance; 9.701000 allowance remaining)
-1 BTC = 58621.000000 AUD (on Coingecko as of 2021-05-17T11:07:33+02:00)
-1 BTC = 58720.670000 AUD (on Cryptowatch/Binance as of 2021-05-17T11:07:33+02:00)
-1 BTC = 37449.000000 EUR (on Coingecko as of 2021-05-17T11:07:33+02:00)
-1 BTC = 37251.630000 EUR (on Cryptowatch/Binance as of 2021-05-17T11:07:33+02:00)
-1 BTC = 45492.000000 USD (on Coingecko as of 2021-05-17T11:07:33+02:00)
-1 ETH = 4583.470000 AUD (on Coingecko as of 2021-05-17T11:07:33+02:00)
-1 ETH = 4571.430000 AUD (on Cryptowatch/Binance as of 2021-05-17T11:07:33+02:00)
-1 ETH = 2928.060000 EUR (on Coingecko as of 2021-05-17T11:07:33+02:00)
-1 ETH = 2899.530000 EUR (on Cryptowatch/Binance as of 2021-05-17T11:07:33+02:00)
-1 ETH = 3556.950000 USD (on Coingecko as of 2021-05-17T11:07:33+02:00)
-1 LTC = 372.200000 AUD (on Coingecko as of 2021-05-17T11:07:33+02:00)
-1 LTC = 237.770000 EUR (on Coingecko as of 2021-05-17T11:07:33+02:00)
-1 LTC = 236.890000 EUR (on Cryptowatch/Binance as of 2021-05-17T11:07:33+02:00)
-1 LTC = 288.840000 USD (on Coingecko as of 2021-05-17T11:07:33+02:00)
+$ coinspy -C LTC,BTC,ETH -F USD,EUR,AUD
+1 BTC = 106689.540000 AUD (on CoinGate as of 2024-04-11T10:55:58Z)
+1 BTC = 65409.310000 EUR (on CoinGate as of 2024-04-11T10:55:58Z)
+1 BTC = 70332.590000 USD (on CoinGate as of 2024-04-11T10:55:58Z)
+1 ETH = 5390.140000 AUD (on CoinGate as of 2024-04-11T10:55:58Z)
+1 ETH = 3304.590000 EUR (on CoinGate as of 2024-04-11T10:55:58Z)
+1 ETH = 3553.330000 USD (on CoinGate as of 2024-04-11T10:55:58Z)
+1 LTC = 146.150000 AUD (on CoinGate as of 2024-04-11T10:55:58Z)
+1 LTC = 89.600000 EUR (on CoinGate as of 2024-04-11T10:55:58Z)
+1 LTC = 96.340000 USD (on CoinGate as of 2024-04-11T10:55:58Z)
 ```
 
 Fetch rates and calculate total portfolio value:
 
 ```shell
-$ coinspy -P Coingecko,Cryptowatch/Binance -C LTC=0.654,BTC=1.2345,ETH=3.21 -F EUR,USD,AUD --portfolio-value-top
-Error: Market not found (LTC/AUD on Cryptowatch/Binance; 9.985000 allowance remaining)
-Error: Market not found (BTC/USD on Cryptowatch/Binance; 9.965000 allowance remaining)
-Error: Market not found (LTC/USD on Cryptowatch/Binance; 9.975000 allowance remaining)
-Error: Market not found (ETH/USD on Cryptowatch/Binance; 9.945000 allowance remaining)
-Total portfolio value: 136452.82 AUD
-Total portfolio value: 86551.81 EUR
-Total portfolio value: 51409.13 USD
-1.234500 BTC = 58222.723500 AUD (on Coingecko as of 2021-07-04T14:26:18+02:00)
-1.234500 BTC = 58267.424745 AUD (on Cryptowatch/Binance as of 2021-07-04T14:26:18+02:00)
-1.234500 BTC = 36952.288500 EUR (on Coingecko as of 2021-07-04T14:26:18+02:00)
-1.234500 BTC = 36863.737815 EUR (on Cryptowatch/Binance as of 2021-07-04T14:26:18+02:00)
-1.234500 BTC = 43844.502000 USD (on Coingecko as of 2021-07-04T14:26:18+02:00)
-3.210000 ETH = 9920.761800 AUD (on Coingecko as of 2021-07-04T14:26:18+02:00)
-3.210000 ETH = 9917.006100 AUD (on Cryptowatch/Binance as of 2021-07-04T14:26:18+02:00)
-3.210000 ETH = 6297.281700 EUR (on Coingecko as of 2021-07-04T14:26:18+02:00)
-3.210000 ETH = 6280.172400 EUR (on Cryptowatch/Binance as of 2021-07-04T14:26:18+02:00)
-3.210000 ETH = 7470.761400 USD (on Coingecko as of 2021-07-04T14:26:18+02:00)
-0.654000 LTC = 124.907460 AUD (on Coingecko as of 2021-07-04T14:26:18+02:00)
-0.654000 LTC = 79.277880 EUR (on Coingecko as of 2021-07-04T14:26:18+02:00)
-0.654000 LTC = 79.048980 EUR (on Cryptowatch/Binance as of 2021-07-04T14:26:18+02:00)
-0.654000 LTC = 93.862080 USD (on Coingecko as of 2021-07-04T14:26:18+02:00)
+$ coinspy -C LTC=0.654,BTC=1.2345,ETH=3.21 -F EUR,USD,AUD --portfolio-value-top
+Total portfolio value: 91414.13 EUR
+Total portfolio value: 98294.78 USD
+Total portfolio value: 149106.17 AUD
+1.234500 BTC = 131708.237130 AUD (on CoinGate as of 2024-04-11T10:56:25Z)
+1.234500 BTC = 80747.793195 EUR (on CoinGate as of 2024-04-11T10:56:25Z)
+1.234500 BTC = 86825.582355 USD (on CoinGate as of 2024-04-11T10:56:25Z)
+3.210000 ETH = 17302.349400 AUD (on CoinGate as of 2024-04-11T10:56:25Z)
+3.210000 ETH = 10607.733900 EUR (on CoinGate as of 2024-04-11T10:56:25Z)
+3.210000 ETH = 11406.189300 USD (on CoinGate as of 2024-04-11T10:56:25Z)
+0.654000 LTC = 95.582100 AUD (on CoinGate as of 2024-04-11T10:56:25Z)
+0.654000 LTC = 58.598400 EUR (on CoinGate as of 2024-04-11T10:56:25Z)
+0.654000 LTC = 63.006360 USD (on CoinGate as of 2024-04-11T10:56:25Z)
 ```
 
 ## Supported Providers and Markets
@@ -97,7 +79,6 @@ The major providers supported by Coinspy are:
 
 * CoinGate
 * Coingecko
-* Cryptowatch with all available markets
 
 All providers listed above use free API endpoints, so no credentials are required to fetch exchange rates. In addition, the following providers, which require authentication, are supported:
 

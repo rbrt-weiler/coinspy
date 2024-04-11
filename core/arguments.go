@@ -36,7 +36,7 @@ func LoadEnv() {
 func SetupFlags() {
 	LoadEnv()
 	pflag.BoolVar(&Config.List.Providers, "list-providers", false, "List possible providers")
-	pflag.StringVarP(&Config.Providers, "providers", "P", envordef.StringVal("COINSPY_PROVIDERS", "Cryptowatch/Kraken"), "Exchange rate providers to use")
+	pflag.StringVarP(&Config.Providers, "providers", "P", envordef.StringVal("COINSPY_PROVIDERS", "CoinGate"), "Exchange rate providers to use")
 	pflag.StringVarP(&Config.Coins, "coins", "C", envordef.StringVal("COINSPY_COINS", ""), "Coins to fetch rates for")
 	pflag.StringVarP(&Config.Fiats, "fiats", "F", envordef.StringVal("COINSPY_FIATS", ""), "Fiats to fetch rates for")
 	pflag.StringVar(&Config.LiveCoinWatch.APIKey, "livecoinwatch-apikey", envordef.StringVal("COINSPY_LIVECOINWATCH_APIKEY", ""), "API key for accessing the LiveCoinWatch API")

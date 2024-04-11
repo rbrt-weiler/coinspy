@@ -6,7 +6,6 @@ import (
 	"github.com/go-resty/resty/v2"
 	"gitlab.com/rbrt-weiler/coinspy/providers/coingate"
 	"gitlab.com/rbrt-weiler/coinspy/providers/coingecko"
-	"gitlab.com/rbrt-weiler/coinspy/providers/cryptowatch"
 	"gitlab.com/rbrt-weiler/coinspy/providers/livecoinwatch"
 	"gitlab.com/rbrt-weiler/coinspy/types"
 )
@@ -27,12 +26,6 @@ func CoinGate(c *resty.Client) (p *coingate.CoinGate) {
 // Coingecko returns an initialized provider implementation.
 func Coingecko(c *resty.Client) (p *coingecko.Coingecko) {
 	provider := coingecko.New(c)
-	return &provider
-}
-
-// Cryptowatch returns an initialized provider implementation.
-func Cryptowatch(c *resty.Client) (p *cryptowatch.Cryptowatch) {
-	provider := cryptowatch.New(c)
 	return &provider
 }
 
