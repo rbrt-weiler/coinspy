@@ -140,7 +140,7 @@ Precompiled binaries for Windows, Linux and macOS are available as _deploy-tagge
 
 ## Running / Compiling
 
-Coinspy has been developed and tested with [go1.16](https://golang.org/doc/go1.16).
+Coinspy has been developed and tested with [go1.22](https://go.dev/doc/go1.22).
 
 ### Go Toolchain
 
@@ -152,7 +152,7 @@ This project includes a Makefile for GNU make. Run `make` to get help; essential
 
 ### Docker-based Builds
 
-Docker can be used to compile binaries by running `docker run --rm -v $PWD:/go/src -w /go/src golang:1.16 go build -o coinspy .`. By passing the `GOOS` and `GOARCH` environment variables (via `-e`) this also enables cross compiling using Docker, for example `docker run --rm -v $PWD:/go/src -w /go/src -e CGO_ENABLED=0 -e GOOS=darwin -e GOARCH=arm64 golang:1.16 go build -o coinspy .` would compile a static binary for ARM-based macOS.
+Docker can be used to compile binaries by running `docker run --rm -v $PWD:/go/src -w /go/src golang:1.22 go build -o coinspy .`. By passing the `GOOS` and `GOARCH` environment variables (via `-e`) this also enables cross compiling using Docker, for example `docker run --rm -v $PWD:/go/src -w /go/src -e CGO_ENABLED=0 -e GOOS=darwin -e GOARCH=arm64 golang:1.22 go build -o coinspy .` would compile a static binary for ARM-based macOS.
 
 ## Source
 
