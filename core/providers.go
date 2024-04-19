@@ -5,7 +5,7 @@ package core
 func ProviderList() (providers map[string][]string, err error) {
 	providers = make(map[string][]string)
 
-	for _, provider := range []string{"CoinGate", "Coingecko", "LiveCoinWatch"} {
+	for _, provider := range []string{"Bitpanda", "CoinGate", "Coingecko", "LiveCoinWatch"} {
 		providers[provider] = append(providers[provider], "default")
 	}
 

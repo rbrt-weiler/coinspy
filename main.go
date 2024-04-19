@@ -39,6 +39,8 @@ func listProviders() {
 // initializeProvider initializes and returns a provider object based on the name of the provider.
 func initializeProvider(providerName string, httpClient *resty.Client) (provider providers.Provider, err error) {
 	switch strings.ToLower(providerName) {
+	case "bitpanda":
+		provider = providers.Bitpanda(httpClient)
 	case "coingate":
 		provider = providers.CoinGate(httpClient)
 	case "coingecko":
