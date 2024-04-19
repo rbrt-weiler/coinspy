@@ -75,8 +75,9 @@ Total portfolio value: 149106.17 AUD
 
 ## Supported Providers and Markets
 
-The major providers supported by Coinspy are:
+The providers supported by Coinspy are:
 
+* Bitpanda
 * CoinGate
 * Coingecko
 
