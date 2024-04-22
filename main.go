@@ -177,6 +177,14 @@ func main() {
 			os.Exit(core.ErrGeneric)
 		}
 	}
+	if config.SQLite3.Enabled {
+		db := databases.SQLite3()
+		dbErr := db.StoreExchangeRates(&rates)
+		if dbErr != nil {
+			cons.Fprintf(os.Stderr, "Error: %s\n", dbErr)
+			os.Exit(core.ErrGeneric)
+		}
+	}
 	if config.Pushover.Enabled {
 		poErr := core.SendPushoverMessage(config.Pushover.Token, config.Pushover.User, strings.Join(resultSet, core.LineBreak), time.Now())
 		if poErr != nil {

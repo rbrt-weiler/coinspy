@@ -18,6 +18,11 @@ type AppConfig struct {
 		Timeout uint16
 		Enabled bool
 	}
+	SQLite3 struct {
+		File    string
+		Table   string
+		Enabled bool
+	}
 	Pushover struct {
 		Token        string
 		User         string
@@ -26,6 +31,7 @@ type AppConfig struct {
 	}
 	Disable struct {
 		QuestDB  bool
+		SQLite3  bool
 		Pushover bool
 	}
 	Quiet                bool

@@ -18,6 +18,7 @@ Available options:
   -C, --coins string                  Coins to fetch rates for
       --disable-pushover              Disable Pushover notifications
       --disable-questdb               Disable QuestDB storage
+      --disable-sqlite3               Disable SQLite3 storage
   -F, --fiats string                  Fiats to fetch rates for
       --list-providers                List possible providers
       --livecoinwatch-apikey string   API key for accessing the LiveCoinWatch API
@@ -34,6 +35,8 @@ Available options:
       --questdb-table string          Table written to in QuestDB (default "exchange_rates")
       --questdb-timeout uint16        Timeout for QuestDB connections (default 10)
   -q, --quiet                         Do not print to stdout
+      --sqlite3-file string           SQLite3 file to use
+      --sqlite3-table string          Table written to in SQLite3 (default "exchange_rates")
 
 For coins and fiats, any well-known symbol (for example BTC for Bitcoin, EUR for Euro) can be used.
 The amount of owned coins can be set by adding =VALUE to the coin, e.g. BTC=1.234.
@@ -106,6 +109,9 @@ On startup, Coinspy will search the environment file in the current directory or
 | COINSPY_QUESTDB_TABLE | --questdb-table |
 | COINSPY_QUESTDB_TIMEOUT | --questdb-timeout |
 | COINSPY_DISABLE_QUESTDB | --disable-questdb |
+| COINSPY_SQLITE3_FILE | --sqlite3-file |
+| COINSPY_SQLITE3_TABLE | --sqlite3-table |
+| COINSPY_DISABLE_SQLITE3 | --disable-sqlite3 |
 | COINSPY_PUSHOVER_USER | --pushover-user |
 | COINSPY_PUSHOVER_TOKEN | --pushover-token |
 | COINSPY_PUSHOVER_INCLUDE_LINKS | --pushover-include-links |
@@ -118,9 +124,17 @@ On startup, Coinspy will search the environment file in the current directory or
 
 Environment variables can also be passed by actually creating environment variables, for example by calling Coinspy like `COINSPY_PROVIDERS="Coingecko" COINSPY_COINS="BTC" COINSPY_FIATS="EUR" coinspy`.
 
-## Storing Exchange Rates in a QuestDB Instance
+## Storing Exchange Rates in a Database
 
-Every time exchange rates are fetched by Coinspy they can also be stored in a [QuestDB](https://questdb.io/) instance. In order to do so, provide the host running QuestDB via _--questdb-host_ and, if necessary, the port exposed by QuestDB via _--questdb-port_. Please note that only the InfluxDB line protocol is supported for writing to QuestDB as of now.
+Coinspy supports storing the exchange rates in a database each time it is run. All supported database backends can be used at the same time.
+
+### QuestDB
+
+In order to store exchange rates in a [QuestDB](https://questdb.io/) instance, provide the host running QuestDB via _--questdb-host_ and, if necessary, the port exposed by QuestDB via _--questdb-port_. Please note that only the InfluxDB line protocol is supported for writing to QuestDB as of now.
+
+### SQLite3
+
+In order to store exchange rates in a [SQLite3](https://www.sqlite.org/) instance, provide the filename via _--sqlite3-file_.
 
 ## Pushover Configuration
 

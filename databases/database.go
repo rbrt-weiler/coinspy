@@ -1,6 +1,7 @@
 package databases
 
 import (
+	"gitlab.com/rbrt-weiler/coinspy/databases/sqlite3"
 	"gitlab.com/rbrt-weiler/coinspy/databases/questdb"
 	"gitlab.com/rbrt-weiler/coinspy/types"
 )
@@ -8,6 +9,12 @@ import (
 // Database is the common interface used for every specific database.
 type Database interface {
 	StoreExchangeRates(rates *types.ExchangeRates) (err error)
+}
+
+// SQLite3 returns an initialized database implementation.
+func SQLite3() (db *sqlite3.SQLite3) {
+	database := sqlite3.New()
+	return &database
 }
 
 // QuestDB returns an initialized database implementation.

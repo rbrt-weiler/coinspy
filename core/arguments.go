@@ -45,6 +45,9 @@ func SetupFlags() {
 	pflag.StringVar(&Config.QuestDB.Table, "questdb-table", envordef.StringVal("COINSPY_QUESTDB_TABLE", "exchange_rates"), "Table written to in QuestDB")
 	pflag.Uint16Var(&Config.QuestDB.Timeout, "questdb-timeout", envordef.Uint16Val("COINSPY_QUESTDB_TIMEOUT", 10), "Timeout for QuestDB connections")
 	pflag.BoolVar(&Config.Disable.QuestDB, "disable-questdb", envordef.BoolVal("COINSPY_DISABLE_QUESTDB", false), "Disable QuestDB storage")
+	pflag.StringVar(&Config.SQLite3.File, "sqlite3-file", envordef.StringVal("COINSPY_SQLITE3_FILE", ""), "SQLite3 file to use")
+	pflag.StringVar(&Config.SQLite3.Table, "sqlite3-table", envordef.StringVal("COINSPY_SQLITE3_TABLE", "exchange_rates"), "Table written to in SQLite3")
+	pflag.BoolVar(&Config.Disable.SQLite3, "disable-sqlite3", envordef.BoolVal("COINSPY_DISABLE_SQLITE3", false), "Disable SQLite3 storage")
 	pflag.StringVar(&Config.Pushover.Token, "pushover-token", envordef.StringVal("COINSPY_PUSHOVER_TOKEN", ""), "Token for Pushover API access")
 	pflag.StringVar(&Config.Pushover.User, "pushover-user", envordef.StringVal("COINSPY_PUSHOVER_USER", ""), "User for Pushover API access")
 	pflag.BoolVar(&Config.Pushover.IncludeLinks, "pushover-include-links", envordef.BoolVal("COINSPY_PUSHOVER_INCLUDE_LINKS", false), "Include links to charts in Pushover notifications")
@@ -95,6 +98,11 @@ func CheckArguments() {
 				os.Exit(ErrGeneric)
 			}
 			Config.QuestDB.Enabled = true
+		}
+	}
+	if !Config.Disable.SQLite3 {
+		if len(Config.SQLite3.File) > 0 {
+			Config.SQLite3.Enabled = true
 		}
 	}
 	if !Config.Disable.Pushover {

@@ -2,3 +2,5 @@
 /out
 .*env
 *.sql
+*.db
+*.sqlite
