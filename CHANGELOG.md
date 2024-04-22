@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
-(Currently nothing to note.)
+### Changed
+
+1. QuestDB connections time out after 10 seconds with an appropriate error message.
 
 ## [1.2.4] - 2024-04-19
 

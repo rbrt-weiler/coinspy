@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"strings"
+	"time"
 
 	"gitlab.com/rbrt-weiler/coinspy/core"
 	"gitlab.com/rbrt-weiler/coinspy/types"
@@ -11,17 +12,22 @@ import (
 
 // QDBStoreExchangeRates stores a set of exchange rates in a QuestDB database.
 func QuestDBStoreExchangeRates(rates *types.ExchangeRates) (err error) {
-	var qdbAddr *net.TCPAddr
-	var qdbConn *net.TCPConn
+	var qdbConn net.Conn
 	var rate types.ExchangeRate
 	var influxLine string
+	var timeout time.Duration
 
-	qdbAddr, err = net.ResolveTCPAddr("tcp", fmt.Sprintf("%s:%d", core.Config.QuestDB.Host, core.Config.QuestDB.Port))
+	_, err = net.LookupHost(core.Config.QuestDB.Host)
 	if err != nil {
 		err = fmt.Errorf("could not resolve QuestDB host: %s", err)
 		return
 	}
-	qdbConn, err = net.DialTCP("tcp", nil, qdbAddr)
+	timeout, err = time.ParseDuration("10s")
+	if err != nil {
+		err = fmt.Errorf("could not set timeout: %s", err)
+		return
+	}
+	qdbConn, err = net.DialTimeout("tcp", fmt.Sprintf("%s:%d", core.Config.QuestDB.Host, core.Config.QuestDB.Port), timeout)
 	if err != nil {
 		err = fmt.Errorf("could not connect to QuestDB host: %s", err)
 		return
