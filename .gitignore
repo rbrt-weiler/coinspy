@@ -1,3 +1,4 @@
 /.questdb
 /out
 .*env
+*.sql
