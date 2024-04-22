@@ -31,6 +31,8 @@ Available options:
       --pushover-user string          User for Pushover API access
       --questdb-host string           Host running QuestDB
       --questdb-port uint16           Port QuestDB Influx is listening on (default 9009)
+      --questdb-table string          Table written to in QuestDB (default "exchange_rates")
+      --questdb-timeout uint16        Timeout for QuestDB connections (default 10)
   -q, --quiet                         Do not print to stdout
 
 For coins and fiats, any well-known symbol (for example BTC for Bitcoin, EUR for Euro) can be used.
@@ -101,6 +103,8 @@ On startup, Coinspy will search the environment file in the current directory or
 | COINSPY_LIVECOINWATCH_APIKEY | --livecoinwatch-apikey |
 | COINSPY_QUESTDB_HOST | --questdb-host |
 | COINSPY_QUESTDB_PORT | --questdb-port |
+| COINSPY_QUESTDB_TABLE | --questdb-table |
+| COINSPY_QUESTDB_TIMEOUT | --questdb-timeout |
 | COINSPY_DISABLE_QUESTDB | --disable-questdb |
 | COINSPY_PUSHOVER_USER | --pushover-user |
 | COINSPY_PUSHOVER_TOKEN | --pushover-token |
