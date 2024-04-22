@@ -1,4 +1,4 @@
-package databases
+package questdb
 
 import (
 	"fmt"
@@ -10,8 +10,20 @@ import (
 	"gitlab.com/rbrt-weiler/coinspy/types"
 )
 
-// QuestDBStoreExchangeRates stores a set of exchange rates in a QuestDB database.
-func QuestDBStoreExchangeRates(rates *types.ExchangeRates) (err error) {
+// QuestDB is a specific implementation of a Database.
+type QuestDB struct {
+	// Error is used to convey possible errors.
+	Error error
+}
+
+// New initializes and returns a usable Database object.
+func New() (db QuestDB) {
+	db.Error = nil
+	return
+}
+
+// StoreExchangeRates stores a set of exchange rates in a QuestDB database.
+func (db *QuestDB) StoreExchangeRates(rates *types.ExchangeRates) (err error) {
 	var qdbConn net.Conn
 	var rate types.ExchangeRate
 	var influxLine string

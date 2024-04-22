@@ -170,9 +170,10 @@ func main() {
 		}
 	}
 	if config.QuestDB.Enabled {
-		qdbErr := databases.QuestDBStoreExchangeRates(&rates)
-		if qdbErr != nil {
-			cons.Fprintf(os.Stderr, "Error: %s\n", qdbErr)
+		db := databases.QuestDB()
+		dbErr := db.StoreExchangeRates(&rates)
+		if dbErr != nil {
+			cons.Fprintf(os.Stderr, "Error: %s\n", dbErr)
 			os.Exit(core.ErrGeneric)
 		}
 	}
