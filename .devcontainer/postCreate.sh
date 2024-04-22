@@ -9,3 +9,6 @@ go get -u -v golang.org/x/lint/golint
 go get -u -v github.com/ramya-rao-a/go-outline
 go get -u -v github.com/uudashr/gopkgs/v2/cmd/gopkgs
 go get -u -v golang.org/x/tools/gopls
+
+# Start QuestDB
+/opt/questdb/questdb.sh start

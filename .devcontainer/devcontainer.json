@@ -1,6 +1,10 @@
 {
 	"name": "VSC Golang Container",
 	"dockerFile": "Dockerfile",
+	"runArgs": [
+		"-p=9000:9000",
+		"-p=9009:9009"
+	],
 	"customizations": {
 		"vscode": {
 			"extensions": [
