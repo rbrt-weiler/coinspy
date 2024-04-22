@@ -35,7 +35,7 @@ func QuestDBStoreExchangeRates(rates *types.ExchangeRates) (err error) {
 	defer qdbConn.Close()
 
 	for _, rate = range rates.Rates {
-		influxLine = fmt.Sprintf(`exchange_rates,provider=%s,market=%s coin="%s",fiat="%s",rate=%f %d`, strings.ToLower(rate.Provider), strings.ToLower(rate.Market), strings.ToUpper(rate.Coin), strings.ToUpper(rate.Fiat), rate.Rate, rate.AsOf.UTC().UnixNano())
+		influxLine = fmt.Sprintf(`%s,provider=%s,market=%s coin="%s",fiat="%s",rate=%f %d`, core.Config.QuestDB.Table, strings.ToLower(rate.Provider), strings.ToLower(rate.Market), strings.ToUpper(rate.Coin), strings.ToUpper(rate.Fiat), rate.Rate, rate.AsOf.UTC().UnixNano())
 		influxLine = fmt.Sprintf("%s\n", influxLine)
 		_, err = qdbConn.Write([]byte(influxLine))
 		if err != nil {

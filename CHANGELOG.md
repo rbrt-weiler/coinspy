@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+### Added
+
+1. The table that is written to within QuestDB can now be specified with `--questdb-table`.
+
 ### Changed
 
 1. QuestDB connections time out after 10 seconds with an appropriate error message.

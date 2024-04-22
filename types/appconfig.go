@@ -14,6 +14,7 @@ type AppConfig struct {
 	QuestDB struct {
 		Host    string
 		Port    uint16
+		Table   string
 		Enabled bool
 	}
 	Pushover struct {
