@@ -1,4 +1,4 @@
-Copyright (c) 2021 Robert Weiler.  All rights reserved.
+Copyright (c) 2021-2024 Robert Weiler.  All rights reserved.
 
 Developed by: Robert Weiler
               https://robert.weiler.one/
