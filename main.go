@@ -10,6 +10,7 @@ import (
 	resty "github.com/go-resty/resty/v2"
 
 	"gitlab.com/rbrt-weiler/coinspy/core"
+	"gitlab.com/rbrt-weiler/coinspy/databases"
 	"gitlab.com/rbrt-weiler/coinspy/providers"
 	"gitlab.com/rbrt-weiler/coinspy/types"
 )
@@ -169,7 +170,7 @@ func main() {
 		}
 	}
 	if config.QuestDB.Enabled {
-		qdbErr := core.QDBStoreExchangeRates(&rates)
+		qdbErr := databases.QuestDBStoreExchangeRates(&rates)
 		if qdbErr != nil {
 			cons.Fprintf(os.Stderr, "Error: %s\n", qdbErr)
 			os.Exit(core.ErrGeneric)

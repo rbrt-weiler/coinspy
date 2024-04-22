@@ -1,21 +1,22 @@
-package core
+package databases
 
 import (
 	"fmt"
 	"net"
 	"strings"
 
+	"gitlab.com/rbrt-weiler/coinspy/core"
 	"gitlab.com/rbrt-weiler/coinspy/types"
 )
 
 // QDBStoreExchangeRates stores a set of exchange rates in a QuestDB database.
-func QDBStoreExchangeRates(rates *types.ExchangeRates) (err error) {
+func QuestDBStoreExchangeRates(rates *types.ExchangeRates) (err error) {
 	var qdbAddr *net.TCPAddr
 	var qdbConn *net.TCPConn
 	var rate types.ExchangeRate
 	var influxLine string
 
-	qdbAddr, err = net.ResolveTCPAddr("tcp", fmt.Sprintf("%s:%d", Config.QuestDB.Host, Config.QuestDB.Port))
+	qdbAddr, err = net.ResolveTCPAddr("tcp", fmt.Sprintf("%s:%d", core.Config.QuestDB.Host, core.Config.QuestDB.Port))
 	if err != nil {
 		err = fmt.Errorf("could not resolve QuestDB host: %s", err)
 		return
