@@ -43,6 +43,7 @@ func SetupFlags() {
 	pflag.StringVar(&Config.QuestDB.Host, "questdb-host", envordef.StringVal("COINSPY_QUESTDB_HOST", ""), "Host running QuestDB")
 	pflag.Uint16Var(&Config.QuestDB.Port, "questdb-port", envordef.Uint16Val("COINSPY_QUESTDB_PORT", 9009), "Port QuestDB Influx is listening on")
 	pflag.StringVar(&Config.QuestDB.Table, "questdb-table", envordef.StringVal("COINSPY_QUESTDB_TABLE", "exchange_rates"), "Table written to in QuestDB")
+	pflag.Uint16Var(&Config.QuestDB.Timeout, "questdb-timeout", envordef.Uint16Val("COINSPY_QUESTDB_TIMEOUT", 10), "Timeout for QuestDB connections")
 	pflag.BoolVar(&Config.Disable.QuestDB, "disable-questdb", envordef.BoolVal("COINSPY_DISABLE_QUESTDB", false), "Disable QuestDB storage")
 	pflag.StringVar(&Config.Pushover.Token, "pushover-token", envordef.StringVal("COINSPY_PUSHOVER_TOKEN", ""), "Token for Pushover API access")
 	pflag.StringVar(&Config.Pushover.User, "pushover-user", envordef.StringVal("COINSPY_PUSHOVER_USER", ""), "User for Pushover API access")
@@ -70,6 +71,9 @@ func SetupFlags() {
 		os.Exit(ErrUsage)
 	}
 	pflag.Parse()
+	if (Config.QuestDB.Timeout < 1) {
+		Config.QuestDB.Timeout = 1
+	}
 }
 
 // CheckArguments performs a sanity check on the parsed CLI arguments.

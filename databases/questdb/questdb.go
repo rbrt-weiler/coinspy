@@ -34,7 +34,7 @@ func (db *QuestDB) StoreExchangeRates(rates *types.ExchangeRates) (err error) {
 		err = fmt.Errorf("could not resolve QuestDB host: %s", err)
 		return
 	}
-	timeout, err = time.ParseDuration("10s")
+	timeout, err = time.ParseDuration(fmt.Sprintf("%ds", core.Config.QuestDB.Timeout))
 	if err != nil {
 		err = fmt.Errorf("could not set timeout: %s", err)
 		return

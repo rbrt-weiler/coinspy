@@ -15,6 +15,7 @@ type AppConfig struct {
 		Host    string
 		Port    uint16
 		Table   string
+		Timeout uint16
 		Enabled bool
 	}
 	Pushover struct {
