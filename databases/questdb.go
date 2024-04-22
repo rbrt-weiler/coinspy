@@ -10,7 +10,7 @@ import (
 	"gitlab.com/rbrt-weiler/coinspy/types"
 )
 
-// QDBStoreExchangeRates stores a set of exchange rates in a QuestDB database.
+// QuestDBStoreExchangeRates stores a set of exchange rates in a QuestDB database.
 func QuestDBStoreExchangeRates(rates *types.ExchangeRates) (err error) {
 	var qdbConn net.Conn
 	var rate types.ExchangeRate
