@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
-	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 	"gitlab.com/rbrt-weiler/coinspy/core"
@@ -49,12 +48,14 @@ func (db *SQLite3) StoreExchangeRates(rates *types.ExchangeRates) (err error) {
 	return
 }
 
+// sanitizeTableName returns a safe variant of the table name passed via arguments.
 func sanitizeTableName() (tblName string) {
-	// TODO: Actually sanitize the table name
-	tblName = core.Config.SQLite3.Table
+	// This is extremely basic.
+	tblName = strings.ReplaceAll(core.Config.SQLite3.Table, "'", "")
 	return
 }
 
+// createTable contains all code to create the required table in the database along with indices.
 func createTable(sqlDb *sql.DB) (err error) {
 	var tableName string
 	var tx *sql.Tx
@@ -68,7 +69,7 @@ func createTable(sqlDb *sql.DB) (err error) {
 		return
 	}
 	stmt, err = tx.Prepare(fmt.Sprintf(`
-		CREATE TABLE IF NOT EXISTS %s (
+		CREATE TABLE IF NOT EXISTS '%s' (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			provider VARCHAR(100),
 			market VARCHAR(100),
@@ -77,9 +78,9 @@ func createTable(sqlDb *sql.DB) (err error) {
 			rate FLOAT,
 			rateAsOf TEXT
 		);
-		CREATE INDEX IF NOT EXISTS idx_coin ON %s (coin);
-		CREATE INDEX IF NOT EXISTS idx_fiat ON %s (fiat);
-		CREATE INDEX IF NOT EXISTS idx_rateasof ON %s (rateAsOf);
+		CREATE INDEX IF NOT EXISTS idx_coin ON '%s' (coin);
+		CREATE INDEX IF NOT EXISTS idx_fiat ON '%s' (fiat);
+		CREATE INDEX IF NOT EXISTS idx_rateasof ON '%s' (rateAsOf);
 	`, tableName, tableName, tableName, tableName))
 	if err != nil {
 		err = fmt.Errorf("could not prepare SQL statement: %s", err)
@@ -100,6 +101,7 @@ func createTable(sqlDb *sql.DB) (err error) {
 	return
 }
 
+// insertValues actually inserts exchange rates into the database.
 func insertValues(sqlDb *sql.DB, rates *types.ExchangeRates) (err error) {
 	var tableName string
 	var tx *sql.Tx
@@ -114,7 +116,7 @@ func insertValues(sqlDb *sql.DB, rates *types.ExchangeRates) (err error) {
 		return
 	}
 	stmt, err = tx.Prepare(fmt.Sprintf(`
-		INSERT INTO %s (
+		INSERT INTO '%s' (
 			provider,
 			market,
 			coin,
@@ -136,7 +138,7 @@ func insertValues(sqlDb *sql.DB, rates *types.ExchangeRates) (err error) {
 	}
 	defer stmt.Close()
 	for _, rate = range rates.Rates {
-		_, err = stmt.Exec(strings.ToLower(rate.Provider), strings.ToLower(rate.Market), strings.ToUpper(rate.Coin), strings.ToUpper(rate.Fiat), rate.Rate, rate.AsOf.Format(time.RFC3339Nano))
+		_, err = stmt.Exec(strings.ToLower(rate.Provider), strings.ToLower(rate.Market), strings.ToUpper(rate.Coin), strings.ToUpper(rate.Fiat), rate.Rate, rate.AsOf.Format("2006-01-02T15:04:05.000000000-07:00"))
 		if err != nil {
 			err = fmt.Errorf("could not execute SQL statement: %s", err)
 			return
