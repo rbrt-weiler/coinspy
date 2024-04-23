@@ -3,7 +3,7 @@ FROM golang:1.22
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install -y openjdk-17-jre && \
+    apt-get install -y openjdk-17-jre sqlite3 && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/* && \
