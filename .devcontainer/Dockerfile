@@ -17,7 +17,7 @@ RUN wget -O /tmp/questdb-7.4.2-no-jre-bin.tar.gz https://github.com/questdb/ques
 
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64
 
-RUN wget -O /tmp/duckdb_cli.zip https://github.com/duckdb/duckdb/releases/download/v0.10.2/duckdb_cli-linux-`uname -m`.zip && \
+RUN wget -O /tmp/duckdb_cli.zip https://github.com/duckdb/duckdb/releases/download/v0.10.2/duckdb_cli-linux-$(uname -m).zip && \
 	mkdir -p /opt/duckdb && \
 	cd /opt/duckdb && \
 	unzip /tmp/duckdb_cli.zip && \
