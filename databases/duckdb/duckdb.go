@@ -57,9 +57,7 @@ func sanitizeTableName() (tblName string) {
 
 // createTable contains all code to create the required table in the database along with indices.
 func createTable(sqlDb *sql.DB) (err error) {
-	var tableName string
-
-	tableName = sanitizeTableName()
+	var tableName string = sanitizeTableName()
 
 	statements := fmt.Sprintf(`
 		CREATE SEQUENCE IF NOT EXISTS seq_id START 1;

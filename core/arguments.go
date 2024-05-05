@@ -77,7 +77,7 @@ func SetupFlags() {
 		os.Exit(ErrUsage)
 	}
 	pflag.Parse()
-	if (Config.QuestDB.Timeout < 1) {
+	if Config.QuestDB.Timeout < 1 {
 		Config.QuestDB.Timeout = 1
 	}
 }
