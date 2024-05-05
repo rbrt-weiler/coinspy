@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ### Changed
 
 1. QuestDB connections by default time out after 10 seconds with an appropriate error message.
+1. Default table name has been changed from _exchange_rates_ to _crypto_rates_ for all database backends. **This may break your setup!**
 
 ## [1.2.4] - 2024-04-19
 
