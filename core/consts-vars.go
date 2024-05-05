@@ -10,7 +10,7 @@ const (
 	// ToolName contains the name of the application.
 	ToolName string = "Coinspy"
 	// ToolVersion contains the version number of the application.
-	ToolVersion string = "1.2.4"
+	ToolVersion string = "1.2.5-dev"
 	// ToolID contains a user-agent-style representation of ToolName/ToolVersion.
 	ToolID string = ToolName + "/" + ToolVersion
 	// ToolURL contains the URL where the application can be found.
