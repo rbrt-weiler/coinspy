@@ -78,7 +78,7 @@ lint-go: ## Use golintci-lint on your project
 ifneq (,$(suse_docker))
 	mkdir -p $(sout_dir)
 	$(eval OUTPUT_OPTIONS = $(shell [ "${sexport_result}" == "true" ] && echo "--out-format checkstyle ./... | tee /dev/tty > ${sout_dir}/checkstyle-report.xml" || echo "" ))
-	docker run --rm -v $(shell pwd):/app -w /app golangci/golangci-lint:latest-alpine golangci-lint run --deadline=65s $(OUTPUT_OPTIONS)
+	docker run --rm -v $(shell pwd):/app -w /app golangci/golangci-lint:latest-alpine golangci-lint run $(OUTPUT_OPTIONS)
 else
 	@echo "${RED}Error:${RESET} Target lint-go is not available without Docker."
 endif
