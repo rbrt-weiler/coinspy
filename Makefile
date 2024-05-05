@@ -1,7 +1,7 @@
 # Based on https://betterprogramming.pub/my-ultimate-makefile-for-golang-projects-fcc8ca20c9bb
 # Extended with knowledge from https://vic.demuzere.be/articles/golang-makefile-crosscompile/
 
-GOVERSION ?= 1.16 ## Set the Go version for Docker
+GOVERSION ?= 1.22 ## Set the Go version for Docker
 GOCMD := go
 GOFMT := $(GOCMD) fmt
 GOMOD := $(GOCMD) mod
