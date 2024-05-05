@@ -40,6 +40,9 @@ func SetupFlags() {
 	pflag.StringVarP(&Config.Coins, "coins", "C", envordef.StringVal("COINSPY_COINS", ""), "Coins to fetch rates for")
 	pflag.StringVarP(&Config.Fiats, "fiats", "F", envordef.StringVal("COINSPY_FIATS", ""), "Fiats to fetch rates for")
 	pflag.StringVar(&Config.LiveCoinWatch.APIKey, "livecoinwatch-apikey", envordef.StringVal("COINSPY_LIVECOINWATCH_APIKEY", ""), "API key for accessing the LiveCoinWatch API")
+	pflag.StringVar(&Config.DuckDB.File, "duckdb-file", envordef.StringVal("COINSPY_DUCKDB_FILE", ""), "DuckDB file to use")
+	pflag.StringVar(&Config.DuckDB.Table, "duckdb-table", envordef.StringVal("COINSPY_DUCKDB_TABLE", "exchange_rates"), "Table written to in DuckDB")
+	pflag.BoolVar(&Config.Disable.DuckDB, "disable-duckdb", envordef.BoolVal("COINSPY_DISABLE_DUCKDB", false), "Disable DuckDB storage")
 	pflag.StringVar(&Config.QuestDB.Host, "questdb-host", envordef.StringVal("COINSPY_QUESTDB_HOST", ""), "Host running QuestDB")
 	pflag.Uint16Var(&Config.QuestDB.Port, "questdb-port", envordef.Uint16Val("COINSPY_QUESTDB_PORT", 9009), "Port QuestDB Influx is listening on")
 	pflag.StringVar(&Config.QuestDB.Table, "questdb-table", envordef.StringVal("COINSPY_QUESTDB_TABLE", "exchange_rates"), "Table written to in QuestDB")
@@ -88,6 +91,11 @@ func CheckArguments() {
 	if Config.Fiats == "" {
 		Cons.Fprintf(os.Stderr, "Error: No fiats provided.\n")
 		os.Exit(ErrGeneric)
+	}
+	if !Config.Disable.DuckDB {
+		if len(Config.DuckDB.File) > 0 {
+			Config.DuckDB.Enabled = true
+		}
 	}
 	if !Config.Disable.QuestDB {
 		if len(Config.QuestDB.Host) > 0 {

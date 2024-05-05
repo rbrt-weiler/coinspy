@@ -3,4 +3,5 @@
 .*env
 *.sql
 *.db
+*.duckdb
 *.sqlite

@@ -16,9 +16,12 @@ Usage: coinspy [options]
 
 Available options:
   -C, --coins string                  Coins to fetch rates for
+      --disable-duckdb                Disable DuckDB storage
       --disable-pushover              Disable Pushover notifications
       --disable-questdb               Disable QuestDB storage
       --disable-sqlite3               Disable SQLite3 storage
+      --duckdb-file string            DuckDB file to use
+      --duckdb-table string           Table written to in DuckDB (default "exchange_rates")
   -F, --fiats string                  Fiats to fetch rates for
       --list-providers                List possible providers
       --livecoinwatch-apikey string   API key for accessing the LiveCoinWatch API
@@ -104,6 +107,9 @@ On startup, Coinspy will search the environment file in the current directory or
 | COINSPY_COINS | -C, --coins |
 | COINSPY_FIATS | -F, --fiats |
 | COINSPY_LIVECOINWATCH_APIKEY | --livecoinwatch-apikey |
+| COINSPY_DUCKDB_FILE | --duckdb-file |
+| COINSPY_DUCKDB_TABLE | --duckdb-table |
+| COINSPY_DISABLE_DUCKDB | --disable-duckdb |
 | COINSPY_QUESTDB_HOST | --questdb-host |
 | COINSPY_QUESTDB_PORT | --questdb-port |
 | COINSPY_QUESTDB_TABLE | --questdb-table |
@@ -127,6 +133,10 @@ Environment variables can also be passed by actually creating environment variab
 ## Storing Exchange Rates in a Database
 
 Coinspy supports storing the exchange rates in a database each time it is run. All supported database backends can be used at the same time.
+
+### DuckDB
+
+In order to store exchange rates in a [DuckDB](https://duckdb.org/) instance, provide the filename via _--duckdb-file_.
 
 ### QuestDB
 

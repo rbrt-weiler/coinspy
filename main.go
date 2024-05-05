@@ -169,6 +169,14 @@ func main() {
 			cons.Println(line)
 		}
 	}
+	if config.DuckDB.Enabled {
+		db := databases.DuckDB()
+		dbErr := db.StoreExchangeRates(&rates)
+		if dbErr != nil {
+			cons.Fprintf(os.Stderr, "Error: %s\n", dbErr)
+			os.Exit(core.ErrGeneric)
+		}
+	}
 	if config.QuestDB.Enabled {
 		db := databases.QuestDB()
 		dbErr := db.StoreExchangeRates(&rates)
