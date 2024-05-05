@@ -21,8 +21,7 @@ RUN wget -O /tmp/duckdb_cli.zip https://github.com/duckdb/duckdb/releases/downlo
 	mkdir -p /opt/duckdb && \
 	cd /opt/duckdb && \
 	unzip /tmp/duckdb_cli.zip && \
-	cd /bin && \
-	ln -s /opt/duckdb/duckdb && \
+	ln -s /opt/duckdb/duckdb /bin/duckdb && \
 	rm /tmp/duckdb_cli.zip
 
 #EXPOSE 8812
