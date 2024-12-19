@@ -3,6 +3,7 @@ package core
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -65,6 +66,7 @@ func SanitizeMessage(message string) (messageParts []string, err error) {
 func SendPushoverMessage(token string, user string, message string, asOf time.Time) (err error) {
 	var htmlParam string
 	var messages []string
+	var urlTitle string
 	var resp *resty.Response
 	var poReply types.PushoverReply
 
@@ -81,6 +83,15 @@ func SendPushoverMessage(token string, user string, message string, asOf time.Ti
 
 	client := resty.New()
 	for _, message = range messages {
+		if Config.Pushover.IncludeHost {
+			hostname, hostnameErr := os.Hostname()
+			if hostnameErr != nil {
+				hostname = "<undefined>"
+			}
+			urlTitle = fmt.Sprintf("sent by %s v%s via %s", ToolName, ToolVersion, hostname)
+		} else {
+			urlTitle = fmt.Sprintf("sent by %s v%s", ToolName, ToolVersion)
+		}
 		resp, err = client.R().
 			SetFormData(map[string]string{
 				"token":     token,
@@ -90,7 +101,7 @@ func SendPushoverMessage(token string, user string, message string, asOf time.Ti
 				"title":     "Coinspy",
 				"sound":     "cashregister",
 				"url":       ToolURL,
-				"url_title": fmt.Sprintf("sent by %s v%s", ToolName, ToolVersion),
+				"url_title": urlTitle,
 				"timestamp": strconv.FormatInt(asOf.Unix(), 10),
 			}).
 			Post("https://api.pushover.net/1/messages.json")

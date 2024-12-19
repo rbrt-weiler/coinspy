@@ -32,6 +32,7 @@ type AppConfig struct {
 		Token        string
 		User         string
 		IncludeLinks bool
+		IncludeHost  bool
 		Enabled      bool
 	}
 	Disable struct {
