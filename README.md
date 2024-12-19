@@ -120,6 +120,7 @@ On startup, Coinspy will search the environment file in the current directory or
 | COINSPY_DISABLE_SQLITE3 | --disable-sqlite3 |
 | COINSPY_PUSHOVER_USER | --pushover-user |
 | COINSPY_PUSHOVER_TOKEN | --pushover-token |
+| COINSPY_PUSHOVER_INCLUDE_HOST | --pushover-include-host |
 | COINSPY_PUSHOVER_INCLUDE_LINKS | --pushover-include-links |
 | COINSPY_DISABLE_PUSHOVER | --disable-pushover |
 | COINSPY_QUIET | -q, --quiet |

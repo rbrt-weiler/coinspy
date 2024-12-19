@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 1. A timeout for QuestDB connections can now be specified with `--questdb-timeout`.
 1. Support for storing exchange rates in a SQLite3 database with `--sqlite3-*`.
 1. Support for storing exchange rates in a DuckDB database with `--duckdb-*`.
+1. Support for including the name of the host that sent the Pushover notification with `--pushover-include-host`.
 
 ### Changed
 
